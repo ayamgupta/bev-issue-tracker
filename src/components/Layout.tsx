@@ -14,7 +14,7 @@ export function Layout() {
             <span className="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-brand-500 text-sm font-bold text-white">
               BE
             </span>
-            BEV Owners Tracker
+            BEV Issue Tracker
           </NavLink>
           <nav className="flex items-center gap-6">
             <NavLink to="/" end className={navLinkClass}>

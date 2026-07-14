@@ -11,13 +11,14 @@ export function Home() {
           alt="Mahindra BEV lineup — BE 6, XEV 9e, XEV 9S"
           className="h-[420px] w-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-ink-950/90 via-ink-950/40 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-ink-950/95 via-ink-950/50 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-r from-ink-950/90 via-ink-950/40 to-transparent sm:to-transparent" />
         <div className="absolute inset-0 flex items-end">
           <div className="mx-auto w-full max-w-6xl px-6 pb-12 text-white">
-            <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl">
+            <h1 className="text-4xl font-semibold tracking-tight drop-shadow-[0_2px_12px_rgba(0,0,0,0.6)] sm:text-5xl">
               What's it really like to own one?
             </h1>
-            <p className="mt-4 max-w-xl text-lg text-ink-100/90">
+            <p className="mt-4 max-w-xl text-lg text-ink-100/90 drop-shadow-[0_1px_6px_rgba(0,0,0,0.6)]">
               An independent, owner-driven issue tracker and analytics dashboard for the Mahindra BE 6, XEV 9e and
               XEV 9S. Anonymous by default. No affiliation with Mahindra.
             </p>
