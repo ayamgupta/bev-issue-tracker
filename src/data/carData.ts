@@ -15,18 +15,23 @@ export const VARIANTS_BY_MODEL: Record<CarModel, string[]> = {
   'XEV 9S': ['Pack One', 'Pack Two', 'Pack Two Above', 'Pack Three', 'Pack Three Select'],
 }
 
+// import.meta.env.BASE_URL matches Vite's `base` config (see vite.config.ts) —
+// on GitHub Pages that's "/<repo-name>/", not "/", so plain "/images/..."
+// strings would 404 there even though they work in local dev.
+const imagesBase = `${import.meta.env.BASE_URL}images/`
+
 export const CAR_MODEL_INFO: Record<CarModel, { tagline: string; image: string }> = {
   'BE 6': {
     tagline: 'Coupe SUV · born electric origin',
-    image: '/images/be6.png',
+    image: `${imagesBase}be6.png`,
   },
   'XEV 9e': {
     tagline: 'Coupe SUV · flagship electric',
-    image: '/images/xev9e.png',
+    image: `${imagesBase}xev9e.png`,
   },
   'XEV 9S': {
     tagline: 'SUV · practical electric',
-    image: '/images/xev9s.png',
+    image: `${imagesBase}xev9s.png`,
   },
 }
 
