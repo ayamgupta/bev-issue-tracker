@@ -23,6 +23,9 @@ export function Layout() {
             <NavLink to="/dashboard" className={navLinkClass}>
               Analytics
             </NavLink>
+            <NavLink to="/resources" className={navLinkClass}>
+              Resources
+            </NavLink>
             <NavLink
               to="/report"
               className="rounded-lg bg-brand-500 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-brand-600"

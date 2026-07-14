@@ -3,6 +3,7 @@ import { Layout } from './components/Layout'
 import { Home } from './pages/Home'
 import { Report } from './pages/Report'
 import { Dashboard } from './pages/Dashboard'
+import { Resources } from './pages/Resources'
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
           <Route index element={<Home />} />
           <Route path="report" element={<Report />} />
           <Route path="dashboard" element={<Dashboard />} />
+          <Route path="resources" element={<Resources />} />
         </Route>
       </Routes>
     </BrowserRouter>
