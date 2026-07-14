@@ -15,7 +15,7 @@ const MODEL_COLOR: Record<string, string> = {
   'XEV 9S': '#eda100',
 }
 
-export function SatisfactionCard({ row }: { row: SatisfactionRow }) {
+export function SatisfactionCard({ row, verdict }: { row: SatisfactionRow; verdict?: string }) {
   const color = MODEL_COLOR[row.car_model] ?? '#2a78d6'
 
   return (
@@ -24,6 +24,7 @@ export function SatisfactionCard({ row }: { row: SatisfactionRow }) {
         <h3 className="font-semibold text-ink-900 dark:text-ink-50">{row.car_model}</h3>
         <span className="text-xs text-ink-500">{row.report_count} reports</span>
       </div>
+      {verdict && <p className="mt-1 text-xs italic text-ink-500">{verdict}</p>}
       <div className="mt-4 space-y-3">
         {METRICS.map((m) => {
           const value = Number(row[m.key])

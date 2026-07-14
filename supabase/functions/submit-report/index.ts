@@ -4,11 +4,15 @@
 // holds a key capable of inserting rows — it calls this function, which:
 //   1. Verifies the Cloudflare Turnstile token server-side (secret key lives
 //      only in this function's environment, never shipped to the client).
-//   2. Rate-limits by hashed IP (soft: blocks a 2nd submission from the same
-//      IP within 6 hours; doesn't try to be bulletproof, just raises the bar).
-//   3. Hashes the registration number (if provided) and checks for a prior
-//      match, flagging the new row as duplicate_suspected rather than
-//      silently rejecting it — a human moderator makes the final call.
+//   2. If a registration number is given and matches an existing report's
+//      hash, treats this as an EDIT of that report (re-submitting the form
+//      with the same reg number updates it) rather than a new submission —
+//      no separate edit page, no login. Skips the IP rate limit in this case
+//      since the reg-number match is a stronger identity signal than IP.
+//   3. Otherwise rate-limits by hashed IP (soft: blocks a 2nd submission from
+//      the same IP within 6 hours) and inserts a new report, flagging
+//      duplicate_suspected if the reg-number hash unexpectedly matches
+//      (shouldn't happen given step 2, kept as a defensive fallback).
 //   4. Inserts into `reports` (public) and `report_private` (PII) using the
 //      service role key, which bypasses RLS.
 //
@@ -137,7 +141,66 @@ Deno.serve(async (req) => {
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!,
     )
 
-    // --- 3. Rate limit by hashed IP --------------------------------------
+    const reportFields = {
+      car_model,
+      variant,
+      purchase_year,
+      odo_km,
+      city: city.trim(),
+      service_center: typeof service_center === 'string' ? service_center.trim() || null : null,
+      major_issues,
+      minor_issues,
+      hardware_rating,
+      software_rating,
+      service_rating,
+      overall_rating,
+      notes: typeof notes === 'string' ? notes.trim().slice(0, 2000) || null : null,
+    }
+
+    // --- 3. Reg-number match -> this is an edit of an existing report ----
+    const regPepper = Deno.env.get('REG_HASH_PEPPER') ?? ''
+    let regHash: string | null = null
+    let existingReportId: string | null = null
+    if (typeof reg_number === 'string' && reg_number.trim()) {
+      regHash = await sha256Hex(normalizeRegNumber(reg_number) + regPepper)
+      const { data: existingPrivate } = await supabase
+        .from('report_private')
+        .select('report_id')
+        .eq('reg_hash', regHash)
+        .maybeSingle()
+      existingReportId = existingPrivate?.report_id ?? null
+    }
+
+    if (existingReportId) {
+      const { data: updated, error: updateError } = await supabase
+        .from('reports')
+        .update({
+          ...reportFields,
+          status: 'pending',
+          updated_at: new Date().toISOString(),
+        })
+        .eq('id', existingReportId)
+        .select('id')
+        .single()
+
+      if (updateError || !updated) {
+        console.error(updateError)
+        return new Response(JSON.stringify({ error: 'Could not update report' }), { status: 500, headers })
+      }
+
+      // Name/contact may have changed slightly; reg number is the match key so it's unchanged.
+      await supabase
+        .from('report_private')
+        .update({
+          owner_name: typeof owner_name === 'string' ? owner_name.trim() || null : null,
+          contact_number: typeof contact_number === 'string' ? contact_number.trim() || null : null,
+        })
+        .eq('report_id', existingReportId)
+
+      return new Response(JSON.stringify({ id: updated.id, updated: true }), { status: 200, headers })
+    }
+
+    // --- 4. New submission: rate limit by hashed IP -----------------------
     const ipPepper = Deno.env.get('IP_HASH_PEPPER') ?? ''
     const ipHash = await sha256Hex(clientIp + ipPepper)
 
@@ -155,39 +218,13 @@ Deno.serve(async (req) => {
       )
     }
 
-    // --- 4. Dedup check on registration number ---------------------------
-    let regHash: string | null = null
-    let duplicateSuspected = false
-    if (typeof reg_number === 'string' && reg_number.trim()) {
-      const regPepper = Deno.env.get('REG_HASH_PEPPER') ?? ''
-      regHash = await sha256Hex(normalizeRegNumber(reg_number) + regPepper)
-      const { data: existing } = await supabase
-        .from('report_private')
-        .select('report_id')
-        .eq('reg_hash', regHash)
-        .limit(1)
-      duplicateSuspected = !!existing && existing.length > 0
-    }
-
     // --- 5. Insert ---------------------------------------------------------
     const { data: inserted, error: insertError } = await supabase
       .from('reports')
       .insert({
-        car_model,
-        variant,
-        purchase_year,
-        odo_km,
-        city: city.trim(),
-        service_center: typeof service_center === 'string' ? service_center.trim() || null : null,
-        major_issues,
-        minor_issues,
-        hardware_rating,
-        software_rating,
-        service_rating,
-        overall_rating,
-        notes: typeof notes === 'string' ? notes.trim().slice(0, 2000) || null : null,
+        ...reportFields,
         submitter_ip_hash: ipHash,
-        duplicate_suspected: duplicateSuspected,
+        duplicate_suspected: false,
       })
       .select('id')
       .single()
@@ -208,7 +245,7 @@ Deno.serve(async (req) => {
       if (piiError) console.error('PII insert failed:', piiError)
     }
 
-    return new Response(JSON.stringify({ id: inserted.id, duplicate_suspected: duplicateSuspected }), {
+    return new Response(JSON.stringify({ id: inserted.id, duplicate_suspected: false }), {
       status: 201,
       headers,
     })

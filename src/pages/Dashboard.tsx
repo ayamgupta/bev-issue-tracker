@@ -47,8 +47,8 @@ export function Dashboard() {
     <div className="mx-auto max-w-6xl px-6 py-12">
       <h1 className="text-2xl font-semibold text-ink-900 dark:text-ink-50">Owner-reported analytics</h1>
       <p className="mt-2 text-sm text-ink-500">
-        Aggregated from community submissions. Unverified reports are included but flagged/removed entries are
-        excluded.
+        Real owners, real gripes, zero brochure spin. Aggregated from community submissions — unverified reports are
+        included, but flagged/removed entries are politely shown the door.
       </p>
 
       {error && <p className="mt-6 text-sm text-rose-500">{error}</p>}
@@ -56,11 +56,16 @@ export function Dashboard() {
 
       {!loading && !error && (
         <>
-          <div className="mt-8 grid gap-4 sm:grid-cols-3">
+          <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             <StatTile label="Total reports" value={summary?.total_reports ?? 0} />
+            <StatTile label="Unique owners reporting" value={summary?.unique_submitters ?? 0} />
             <StatTile label="Verified reports" value={summary?.verified_reports ?? 0} />
             <StatTile label="Cities represented" value={summary?.cities_represented ?? 0} />
           </div>
+          <p className="mt-2 text-xs text-ink-500">
+            "Unique owners reporting" is approximate — it counts distinct submitting connections, not verified
+            identities.
+          </p>
 
           <section className="mt-10 rounded-2xl border border-ink-200 bg-white p-6 dark:border-ink-800 dark:bg-ink-900">
             <div className="flex flex-wrap items-center justify-between gap-4">
@@ -79,6 +84,13 @@ export function Dashboard() {
                 />
               </div>
             </div>
+            {filteredIssues.length > 0 && (
+              <p className="mt-3 text-sm text-ink-500">
+                🏆 Public Enemy No. 1:{' '}
+                <span className="font-medium text-ink-900 dark:text-ink-50">{filteredIssues[0].issue}</span> —
+                reported {filteredIssues[0].occurrences}× and counting. Brochure did not mention this.
+              </p>
+            )}
             <div className="mt-6">
               <IssueBarChart rows={filteredIssues} />
             </div>
@@ -86,10 +98,16 @@ export function Dashboard() {
 
           <section className="mt-10">
             <h2 className="font-semibold text-ink-900 dark:text-ink-50">Satisfaction by model</h2>
+            <p className="mt-1 text-sm text-ink-500">Unfiltered opinions from people who actually have to live with it.</p>
             <div className="mt-4 grid gap-6 sm:grid-cols-3">
-              {satisfaction.length === 0 && <p className="text-sm text-ink-500">No ratings yet.</p>}
+              {satisfaction.length === 0 && (
+                <p className="text-sm text-ink-500">
+                  No ratings yet. Either everyone's thrilled, or everyone's still stuck in traffic composing their
+                  review.
+                </p>
+              )}
               {satisfaction.map((row) => (
-                <SatisfactionCard key={row.car_model} row={row} />
+                <SatisfactionCard key={row.car_model} row={row} verdict={satisfactionVerdict(row.avg_overall)} />
               ))}
             </div>
           </section>
@@ -97,6 +115,14 @@ export function Dashboard() {
       )}
     </div>
   )
+}
+
+function satisfactionVerdict(avgOverall: number): string {
+  if (avgOverall >= 4.5) return 'Suspiciously happy owners. We double-checked for bots. They\'re real.'
+  if (avgOverall >= 3.8) return 'Solidly liked, with the usual asterisks.'
+  if (avgOverall >= 3) return "It's complicated — like most relationships."
+  if (avgOverall >= 2) return 'Owners are coping. Bravely.'
+  return 'Bring a folding chair to the service centre. You\'ll be there a while.'
 }
 
 function StatTile({ label, value }: { label: string; value: number }) {

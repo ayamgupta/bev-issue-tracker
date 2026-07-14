@@ -21,6 +21,7 @@ export interface SatisfactionRow {
 export interface AnalyticsSummary {
   total_reports: number
   verified_reports: number
+  unique_submitters: number
   cities_represented: number
 }
 
@@ -58,9 +59,11 @@ export async function fetchRecentReports(limit = 20): Promise<ReportRow[]> {
 /**
  * All writes go through the `submit-report` Edge Function — the browser
  * never has a key capable of inserting rows directly (see supabase/functions
- * /submit-report and supabase/migrations/0001_init.sql).
+ * /submit-report and supabase/migrations/0001_init.sql). Re-submitting with
+ * a registration number that matches an earlier report updates that report
+ * in place instead of creating a new one (see the function for details).
  */
-export async function submitReport(payload: ReportSubmission): Promise<{ id: string; duplicate_suspected: boolean }> {
+export async function submitReport(payload: ReportSubmission): Promise<{ id: string; updated?: boolean; duplicate_suspected?: boolean }> {
   const { data, error } = await supabase.functions.invoke('submit-report', {
     body: payload,
   })

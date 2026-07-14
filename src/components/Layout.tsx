@@ -45,7 +45,9 @@ export function Layout() {
           </p>
           <p className="mt-2">
             No personally identifying information is ever shown publicly. Registration numbers, names and phone
-            numbers (when provided) are stored separately and used only to detect duplicate/fake entries.
+            numbers (when provided) are stored in a separate, locked-down table and used only to (1) detect
+            duplicate/fake entries and (2) let you update your report later — just fill in the form again with the
+            same registration number and it replaces your previous answers. We never sell or share this data.
           </p>
         </div>
       </footer>
