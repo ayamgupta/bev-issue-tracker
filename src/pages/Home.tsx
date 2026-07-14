@@ -7,7 +7,7 @@ export function Home() {
     <div>
       <section className="relative overflow-hidden">
         <CarImage
-          src="/images/hero.jpg"
+          src="/images/hero.png"
           alt="Mahindra BEV lineup — BE 6, XEV 9e, XEV 9S"
           className="h-[420px] w-full object-cover"
         />
