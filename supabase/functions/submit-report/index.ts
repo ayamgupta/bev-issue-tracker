@@ -1,0 +1,219 @@
+// Supabase Edge Function: submit-report
+//
+// This is the ONLY way reports get written to the database. The browser never
+// holds a key capable of inserting rows — it calls this function, which:
+//   1. Verifies the Cloudflare Turnstile token server-side (secret key lives
+//      only in this function's environment, never shipped to the client).
+//   2. Rate-limits by hashed IP (soft: blocks a 2nd submission from the same
+//      IP within 6 hours; doesn't try to be bulletproof, just raises the bar).
+//   3. Hashes the registration number (if provided) and checks for a prior
+//      match, flagging the new row as duplicate_suspected rather than
+//      silently rejecting it — a human moderator makes the final call.
+//   4. Inserts into `reports` (public) and `report_private` (PII) using the
+//      service role key, which bypasses RLS.
+//
+// Deploy: supabase functions deploy submit-report
+// Required secrets (supabase secrets set ...):
+//   TURNSTILE_SECRET_KEY   - from Cloudflare Turnstile dashboard
+//   IP_HASH_PEPPER         - random string, e.g. `openssl rand -hex 32`
+//   REG_HASH_PEPPER        - random string, different from the above
+
+import { createClient } from 'jsr:@supabase/supabase-js@2'
+
+const CAR_MODELS = ['BE 6', 'XEV 9e', 'XEV 9S']
+const RATE_LIMIT_WINDOW_HOURS = 6
+
+function corsHeaders(origin: string | null) {
+  return {
+    'Access-Control-Allow-Origin': origin ?? '*',
+    'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+    'Access-Control-Allow-Methods': 'POST, OPTIONS',
+  }
+}
+
+async function sha256Hex(input: string): Promise<string> {
+  const data = new TextEncoder().encode(input)
+  const digest = await crypto.subtle.digest('SHA-256', data)
+  return Array.from(new Uint8Array(digest))
+    .map((b) => b.toString(16).padStart(2, '0'))
+    .join('')
+}
+
+function normalizeRegNumber(reg: string): string {
+  return reg.toUpperCase().replace(/[\s-]/g, '')
+}
+
+async function verifyTurnstile(token: string, remoteIp: string): Promise<boolean> {
+  const secret = Deno.env.get('TURNSTILE_SECRET_KEY')
+  if (!secret) throw new Error('TURNSTILE_SECRET_KEY not configured')
+
+  const body = new URLSearchParams()
+  body.set('secret', secret)
+  body.set('response', token)
+  body.set('remoteip', remoteIp)
+
+  const res = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
+    method: 'POST',
+    body,
+  })
+  const json = await res.json()
+  return json.success === true
+}
+
+function isValidRating(n: unknown): n is number {
+  return typeof n === 'number' && Number.isInteger(n) && n >= 1 && n <= 5
+}
+
+Deno.serve(async (req) => {
+  const origin = req.headers.get('origin')
+  const headers = { ...corsHeaders(origin), 'Content-Type': 'application/json' }
+
+  if (req.method === 'OPTIONS') return new Response('ok', { headers })
+  if (req.method !== 'POST') {
+    return new Response(JSON.stringify({ error: 'Method not allowed' }), { status: 405, headers })
+  }
+
+  try {
+    const payload = await req.json()
+    const clientIp =
+      req.headers.get('x-forwarded-for')?.split(',')[0].trim() ??
+      req.headers.get('cf-connecting-ip') ??
+      '0.0.0.0'
+
+    // --- 1. Turnstile ---------------------------------------------------
+    if (!payload.turnstile_token || typeof payload.turnstile_token !== 'string') {
+      return new Response(JSON.stringify({ error: 'Missing verification token' }), { status: 400, headers })
+    }
+    const humanVerified = await verifyTurnstile(payload.turnstile_token, clientIp)
+    if (!humanVerified) {
+      return new Response(JSON.stringify({ error: 'Verification failed, please try again' }), { status: 403, headers })
+    }
+
+    // --- 2. Field validation ---------------------------------------------
+    const {
+      car_model,
+      variant,
+      purchase_year,
+      odo_km,
+      city,
+      service_center,
+      major_issues,
+      minor_issues,
+      hardware_rating,
+      software_rating,
+      service_rating,
+      overall_rating,
+      notes,
+      reg_number,
+      owner_name,
+      contact_number,
+    } = payload
+
+    if (!CAR_MODELS.includes(car_model)) {
+      return new Response(JSON.stringify({ error: 'Invalid car model' }), { status: 400, headers })
+    }
+    if (typeof variant !== 'string' || !variant.trim()) {
+      return new Response(JSON.stringify({ error: 'Variant is required' }), { status: 400, headers })
+    }
+    const currentYear = new Date().getFullYear()
+    if (typeof purchase_year !== 'number' || purchase_year < 2023 || purchase_year > currentYear + 1) {
+      return new Response(JSON.stringify({ error: 'Invalid purchase year' }), { status: 400, headers })
+    }
+    if (typeof odo_km !== 'number' || odo_km < 0 || odo_km > 500000) {
+      return new Response(JSON.stringify({ error: 'Invalid odometer reading' }), { status: 400, headers })
+    }
+    if (typeof city !== 'string' || !city.trim()) {
+      return new Response(JSON.stringify({ error: 'City is required' }), { status: 400, headers })
+    }
+    if (!Array.isArray(major_issues) || !Array.isArray(minor_issues)) {
+      return new Response(JSON.stringify({ error: 'Invalid issue list' }), { status: 400, headers })
+    }
+    if (![hardware_rating, software_rating, service_rating, overall_rating].every(isValidRating)) {
+      return new Response(JSON.stringify({ error: 'Ratings must be 1-5' }), { status: 400, headers })
+    }
+
+    const supabase = createClient(
+      Deno.env.get('SUPABASE_URL')!,
+      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!,
+    )
+
+    // --- 3. Rate limit by hashed IP --------------------------------------
+    const ipPepper = Deno.env.get('IP_HASH_PEPPER') ?? ''
+    const ipHash = await sha256Hex(clientIp + ipPepper)
+
+    const { data: recent } = await supabase
+      .from('reports')
+      .select('id')
+      .eq('submitter_ip_hash', ipHash)
+      .gte('created_at', new Date(Date.now() - RATE_LIMIT_WINDOW_HOURS * 3600 * 1000).toISOString())
+      .limit(1)
+
+    if (recent && recent.length > 0) {
+      return new Response(
+        JSON.stringify({ error: `Please wait a few hours before submitting another report from this connection.` }),
+        { status: 429, headers },
+      )
+    }
+
+    // --- 4. Dedup check on registration number ---------------------------
+    let regHash: string | null = null
+    let duplicateSuspected = false
+    if (typeof reg_number === 'string' && reg_number.trim()) {
+      const regPepper = Deno.env.get('REG_HASH_PEPPER') ?? ''
+      regHash = await sha256Hex(normalizeRegNumber(reg_number) + regPepper)
+      const { data: existing } = await supabase
+        .from('report_private')
+        .select('report_id')
+        .eq('reg_hash', regHash)
+        .limit(1)
+      duplicateSuspected = !!existing && existing.length > 0
+    }
+
+    // --- 5. Insert ---------------------------------------------------------
+    const { data: inserted, error: insertError } = await supabase
+      .from('reports')
+      .insert({
+        car_model,
+        variant,
+        purchase_year,
+        odo_km,
+        city: city.trim(),
+        service_center: typeof service_center === 'string' ? service_center.trim() || null : null,
+        major_issues,
+        minor_issues,
+        hardware_rating,
+        software_rating,
+        service_rating,
+        overall_rating,
+        notes: typeof notes === 'string' ? notes.trim().slice(0, 2000) || null : null,
+        submitter_ip_hash: ipHash,
+        duplicate_suspected: duplicateSuspected,
+      })
+      .select('id')
+      .single()
+
+    if (insertError || !inserted) {
+      console.error(insertError)
+      return new Response(JSON.stringify({ error: 'Could not save report' }), { status: 500, headers })
+    }
+
+    if (regHash || owner_name || contact_number) {
+      const { error: piiError } = await supabase.from('report_private').insert({
+        report_id: inserted.id,
+        reg_number: typeof reg_number === 'string' ? reg_number.trim() || null : null,
+        owner_name: typeof owner_name === 'string' ? owner_name.trim() || null : null,
+        contact_number: typeof contact_number === 'string' ? contact_number.trim() || null : null,
+        reg_hash: regHash,
+      })
+      if (piiError) console.error('PII insert failed:', piiError)
+    }
+
+    return new Response(JSON.stringify({ id: inserted.id, duplicate_suspected: duplicateSuspected }), {
+      status: 201,
+      headers,
+    })
+  } catch (err) {
+    console.error(err)
+    return new Response(JSON.stringify({ error: 'Unexpected server error' }), { status: 500, headers })
+  }
+})
