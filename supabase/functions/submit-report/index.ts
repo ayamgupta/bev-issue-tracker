@@ -109,6 +109,8 @@ Deno.serve(async (req) => {
       overall_rating,
       notes,
       software_version,
+      tyre_brand,
+      tyre_life_remaining_pct,
       reg_number,
       owner_name,
       contact_number,
@@ -136,6 +138,13 @@ Deno.serve(async (req) => {
     if (![hardware_rating, software_rating, service_rating, overall_rating].every(isValidRating)) {
       return new Response(JSON.stringify({ error: 'Ratings must be 1-5' }), { status: 400, headers })
     }
+    if (
+      tyre_life_remaining_pct !== undefined &&
+      tyre_life_remaining_pct !== null &&
+      (typeof tyre_life_remaining_pct !== 'number' || tyre_life_remaining_pct < 0 || tyre_life_remaining_pct > 100)
+    ) {
+      return new Response(JSON.stringify({ error: 'Tyre life remaining must be 0-100' }), { status: 400, headers })
+    }
 
     const supabase = createClient(
       Deno.env.get('SUPABASE_URL')!,
@@ -157,6 +166,8 @@ Deno.serve(async (req) => {
       overall_rating,
       notes: typeof notes === 'string' ? notes.trim().slice(0, 2000) || null : null,
       software_version: typeof software_version === 'string' ? software_version.trim().slice(0, 100) || null : null,
+      tyre_brand: typeof tyre_brand === 'string' ? tyre_brand.trim().slice(0, 100) || null : null,
+      tyre_life_remaining_pct: typeof tyre_life_remaining_pct === 'number' ? tyre_life_remaining_pct : null,
     }
 
     // --- 3. Reg-number match -> this is an edit of an existing report ----

@@ -1,4 +1,4 @@
-import { CAR_MODELS, MAJOR_ISSUES, MINOR_ISSUES, VARIANTS_BY_MODEL, type CarModel } from '../data/carData'
+import { CAR_MODELS, MAJOR_ISSUES, MINOR_ISSUES, TYRE_BRAND_SUGGESTIONS, VARIANTS_BY_MODEL, type CarModel } from '../data/carData'
 import { CheckboxGroup } from './CheckboxGroup'
 import { RatingInput } from './RatingInput'
 
@@ -19,6 +19,8 @@ export interface ReportFormValues {
   overallRating: number
   notes: string
   softwareVersion: string
+  tyreBrand: string
+  tyreLifeRemainingPct: string
 }
 
 interface ReportFormFieldsProps {
@@ -118,6 +120,34 @@ export function ReportFormFields({ values, onChange }: ReportFormFieldsProps) {
             <span className="mt-1 block text-xs text-ink-500">
               To check: My Vehicle → External → press and hold the lock button for 10 seconds.
             </span>
+          </label>
+          <label className="block text-sm">
+            <span className="font-medium text-ink-700 dark:text-ink-200">Tyre brand</span>
+            <input
+              type="text"
+              list="tyre-brand-suggestions"
+              value={values.tyreBrand}
+              onChange={(e) => onChange('tyreBrand', e.target.value)}
+              placeholder="e.g. MRF"
+              className="mt-1 w-full rounded-lg border border-ink-300 bg-white px-3 py-2 dark:border-ink-700 dark:bg-ink-950"
+            />
+            <datalist id="tyre-brand-suggestions">
+              {TYRE_BRAND_SUGGESTIONS.map((brand) => (
+                <option key={brand} value={brand} />
+              ))}
+            </datalist>
+          </label>
+          <label className="block text-sm">
+            <span className="font-medium text-ink-700 dark:text-ink-200">Estimated tyre life remaining (%)</span>
+            <input
+              type="number"
+              min={0}
+              max={100}
+              value={values.tyreLifeRemainingPct}
+              onChange={(e) => onChange('tyreLifeRemainingPct', e.target.value)}
+              placeholder="e.g. 70"
+              className="mt-1 w-full rounded-lg border border-ink-300 bg-white px-3 py-2 dark:border-ink-700 dark:bg-ink-950"
+            />
           </label>
         </div>
       </section>

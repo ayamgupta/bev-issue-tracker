@@ -43,6 +43,8 @@ export const MAJOR_ISSUES = [
   'Software crash / infotainment freeze',
   'ADAS malfunction',
   'Braking system issue',
+  'Steering failure / assist loss',
+  'Coolant warning light',
   'Suspension issue',
   'Electrical system failure',
   'Vehicle immobilized / no-start',
@@ -64,7 +66,23 @@ export const MINOR_ISSUES = [
   'Camera / sensor false alerts',
   'Charging port cover issue',
   'Seat / upholstery wear',
+  'Audio bass cut issue',
+  'Audio cracking / distortion',
   'Minor software glitches (non-critical)',
+] as const
+
+// Suggestions only (datalist) — not an enum, since owners may have fitted
+// aftermarket brands we haven't listed. Free text is always accepted.
+export const TYRE_BRAND_SUGGESTIONS = [
+  'MRF',
+  'CEAT',
+  'Apollo',
+  'JK Tyre',
+  'Goodyear',
+  'Bridgestone',
+  'Continental',
+  'Michelin',
+  'Yokohama',
 ] as const
 
 export const SERVICE_CENTER_ASPECTS = [

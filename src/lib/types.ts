@@ -17,6 +17,8 @@ export interface ReportRow {
   overall_rating: number
   notes: string | null
   software_version: string | null
+  tyre_brand: string | null
+  tyre_life_remaining_pct: number | null
   status: 'pending' | 'verified' | 'flagged' | 'removed'
 }
 
@@ -38,5 +40,7 @@ export interface ReportSubmission {
   overall_rating: number
   notes?: string
   software_version?: string
+  tyre_brand?: string
+  tyre_life_remaining_pct?: number
   turnstile_token: string
 }

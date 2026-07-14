@@ -21,6 +21,8 @@ const initialValues: ReportFormValues = {
   overallRating: 0,
   notes: '',
   softwareVersion: '',
+  tyreBrand: '',
+  tyreLifeRemainingPct: '',
 }
 
 export function Report() {
@@ -76,6 +78,8 @@ export function Report() {
         overall_rating: values.overallRating,
         notes: values.notes || undefined,
         software_version: values.softwareVersion || undefined,
+        tyre_brand: values.tyreBrand || undefined,
+        tyre_life_remaining_pct: values.tyreLifeRemainingPct ? Number(values.tyreLifeRemainingPct) : undefined,
         turnstile_token: turnstileToken,
       })
       setWasUpdate(Boolean(result.updated))

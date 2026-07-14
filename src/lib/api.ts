@@ -16,6 +16,13 @@ export interface SoftwareVersionRow {
   occurrences: number
 }
 
+export interface TyreBrandRow {
+  car_model: CarModel
+  tyre_brand: string
+  occurrences: number
+  avg_life_remaining_pct: number | null
+}
+
 export interface SatisfactionRow {
   car_model: CarModel
   avg_hardware: number
@@ -56,6 +63,15 @@ export async function fetchSummary(): Promise<AnalyticsSummary | null> {
 export async function fetchSoftwareVersions(): Promise<SoftwareVersionRow[]> {
   const { data, error } = await supabase
     .from('analytics_software_versions')
+    .select('*')
+    .order('occurrences', { ascending: false })
+  if (error) throw error
+  return data ?? []
+}
+
+export async function fetchTyreBrands(): Promise<TyreBrandRow[]> {
+  const { data, error } = await supabase
+    .from('analytics_tyre_brands')
     .select('*')
     .order('occurrences', { ascending: false })
   if (error) throw error
