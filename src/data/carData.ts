@@ -18,15 +18,15 @@ export const VARIANTS_BY_MODEL: Record<CarModel, string[]> = {
 export const CAR_MODEL_INFO: Record<CarModel, { tagline: string; image: string }> = {
   'BE 6': {
     tagline: 'Coupe SUV · born electric origin',
-    image: '/images/be6.jpg',
+    image: '/images/be6.svg',
   },
   'XEV 9e': {
     tagline: 'Coupe SUV · flagship electric',
-    image: '/images/xev9e.jpg',
+    image: '/images/xev9e.svg',
   },
   'XEV 9S': {
     tagline: 'SUV · practical electric',
-    image: '/images/xev9s.jpg',
+    image: '/images/xev9s.svg',
   },
 }
 

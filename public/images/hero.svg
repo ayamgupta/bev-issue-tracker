@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 700" role="img" aria-labelledby="herotitle">
+  <title id="herotitle">Mahindra BE 6, XEV 9e and XEV 9S — abstract lineup illustration</title>
+  <defs>
+    <linearGradient id="hero-bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0b0e11"/>
+      <stop offset="0.6" stop-color="#12161b"/>
+      <stop offset="1" stop-color="#0f6e5c"/>
+    </linearGradient>
+    <radialGradient id="hero-glow" cx="0.5" cy="0.35" r="0.6">
+      <stop offset="0" stop-color="#3ec9a7" stop-opacity="0.25"/>
+      <stop offset="1" stop-color="#3ec9a7" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1600" height="700" fill="url(#hero-bg)"/>
+  <rect width="1600" height="700" fill="url(#hero-glow)"/>
+  <line x1="0" y1="560" x2="1600" y2="560" stroke="#ffffff" stroke-opacity="0.08" stroke-width="2"/>
+
+  <!-- XEV 9S, background left, amber -->
+  <g transform="translate(60,220) scale(0.72)" opacity="0.85">
+    <path d="M60 268 C60 218 96 196 136 194 L176 150 C192 136 214 128 238 128 L444 128 C470 128 494 138 512 158 L546 194 C580 198 602 216 610 244 L610 268 Z" fill="#eda100"/>
+    <circle cx="192" cy="270" r="42" fill="#0b0e11"/>
+    <circle cx="500" cy="270" r="42" fill="#0b0e11"/>
+  </g>
+
+  <!-- BE 6, center, blue -->
+  <g transform="translate(560,190) scale(0.86)">
+    <path d="M70 268 C70 230 110 210 150 206 L214 158 C238 140 268 130 300 130 L392 130 C426 130 456 142 480 164 L512 200 C548 204 578 220 588 246 L588 268 Z" fill="#2a78d6"/>
+    <circle cx="182" cy="270" r="40" fill="#0b0e11"/>
+    <circle cx="486" cy="270" r="40" fill="#0b0e11"/>
+  </g>
+
+  <!-- XEV 9e, right, aqua -->
+  <g transform="translate(1040,205) scale(0.78)">
+    <path d="M52 268 C52 226 96 204 140 200 L216 150 C244 132 278 122 314 122 L404 122 C440 122 472 136 496 160 L520 196 C558 200 592 218 602 246 L602 268 Z" fill="#1baf7a"/>
+    <circle cx="192" cy="270" r="40" fill="#0b0e11"/>
+    <circle cx="504" cy="270" r="40" fill="#0b0e11"/>
+  </g>
+
+  <text x="80" y="110" font-family="system-ui, sans-serif" font-size="52" font-weight="700" fill="#ffffff">Mahindra BEV lineup</text>
+  <text x="80" y="150" font-family="system-ui, sans-serif" font-size="22" fill="#dde1e6">BE 6 · XEV 9e · XEV 9S</text>
+</svg>

@@ -1,12 +1,5 @@
 # Product images
 
-Drop official Mahindra press-kit images here with these exact filenames (referenced from `src/data/carData.ts`):
+`be6.svg`, `xev9e.svg`, `xev9s.svg` and `hero.svg` are original abstract vector illustrations (not photos of the real vehicles), used because Mahindra's official site does not publish a press kit licensed for third-party redistribution. They're colour-coded to match the model colours used across the analytics dashboard (BE 6 = blue, XEV 9e = aqua, XEV 9S = amber).
 
-- `be6.jpg` — Mahindra BE 6
-- `xev9e.jpg` — Mahindra XEV 9e
-- `xev9s.jpg` — Mahindra XEV 9S
-- `hero.jpg` — wide hero shot for the homepage (any of the three, or a lineup shot)
-
-Source images from Mahindra's official press/media kit (e.g. mahindraelectricsuv.com media section) and confirm you have rights to redistribute before publishing — do not hotlink third-party sites. Until a file is added, the site shows a clean gradient placeholder with the model name instead of a broken image.
-
-Recommended: 1600x1000px, optimized JPG/WebP under 300KB each.
+If you later obtain real product photos you have redistribution rights to (e.g. from Mahindra's press/media team directly, or your own photography), replace these files — `src/data/carData.ts` and `src/pages/Home.tsx` reference them by filename, so a same-named `.jpg`/`.webp` works as a drop-in replacement (update the extension in those two files). `CarImage` falls back to a gradient placeholder if a referenced file is ever missing.
