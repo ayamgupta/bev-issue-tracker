@@ -10,8 +10,8 @@ export const BATTERY_PACKS = ['59 kWh', '70 kWh', '79 kWh'] as const
 export type BatteryPack = (typeof BATTERY_PACKS)[number]
 
 export const VARIANTS_BY_MODEL: Record<CarModel, string[]> = {
-  'BE 6': ['Pack One', 'Pack Two', 'Pack Three', 'Pack Three Select'],
-  'XEV 9e': ['Pack One', 'Pack Two', 'Pack Three', 'Pack Three Select'],
+  'BE 6': ['Pack One', 'Pack Two', 'Pack Three', 'Pack Three Select', 'BE 6 FE', 'BE 6 Batman Edition'],
+  'XEV 9e': ['Pack One', 'Pack Two', 'Pack Three', 'Pack Three Select', 'XEV 9e Cineluxe'],
   'XEV 9S': ['Pack One', 'Pack Two', 'Pack Two Above', 'Pack Three', 'Pack Three Select'],
 }
 
