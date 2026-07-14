@@ -4,8 +4,15 @@ import type { CarModel } from '../data/carData'
 
 export interface IssueFrequencyRow {
   car_model: CarModel
+  variant: string
   issue: string
   severity: 'major' | 'minor'
+  occurrences: number
+}
+
+export interface SoftwareVersionRow {
+  car_model: CarModel
+  software_version: string
   occurrences: number
 }
 
@@ -44,6 +51,15 @@ export async function fetchSummary(): Promise<AnalyticsSummary | null> {
   const { data, error } = await supabase.from('analytics_summary').select('*').single()
   if (error) throw error
   return data
+}
+
+export async function fetchSoftwareVersions(): Promise<SoftwareVersionRow[]> {
+  const { data, error } = await supabase
+    .from('analytics_software_versions')
+    .select('*')
+    .order('occurrences', { ascending: false })
+  if (error) throw error
+  return data ?? []
 }
 
 export async function fetchRecentReports(limit = 20): Promise<ReportRow[]> {

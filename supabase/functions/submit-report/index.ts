@@ -108,6 +108,7 @@ Deno.serve(async (req) => {
       service_rating,
       overall_rating,
       notes,
+      software_version,
       reg_number,
       owner_name,
       contact_number,
@@ -155,6 +156,7 @@ Deno.serve(async (req) => {
       service_rating,
       overall_rating,
       notes: typeof notes === 'string' ? notes.trim().slice(0, 2000) || null : null,
+      software_version: typeof software_version === 'string' ? software_version.trim().slice(0, 100) || null : null,
     }
 
     // --- 3. Reg-number match -> this is an edit of an existing report ----

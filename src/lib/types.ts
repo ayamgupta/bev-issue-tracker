@@ -16,6 +16,7 @@ export interface ReportRow {
   service_rating: number
   overall_rating: number
   notes: string | null
+  software_version: string | null
   status: 'pending' | 'verified' | 'flagged' | 'removed'
 }
 
@@ -36,5 +37,6 @@ export interface ReportSubmission {
   service_rating: number
   overall_rating: number
   notes?: string
+  software_version?: string
   turnstile_token: string
 }

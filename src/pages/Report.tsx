@@ -20,6 +20,7 @@ const initialValues: ReportFormValues = {
   serviceRating: 0,
   overallRating: 0,
   notes: '',
+  softwareVersion: '',
 }
 
 export function Report() {
@@ -74,6 +75,7 @@ export function Report() {
         service_rating: values.serviceRating,
         overall_rating: values.overallRating,
         notes: values.notes || undefined,
+        software_version: values.softwareVersion || undefined,
         turnstile_token: turnstileToken,
       })
       setWasUpdate(Boolean(result.updated))

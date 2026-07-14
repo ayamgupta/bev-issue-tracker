@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Redirecting…</title>
+    <script>
+      // Standard GitHub Pages SPA redirect trick (rafgraph/spa-github-pages).
+      // GitHub Pages only serves real files, so a deep link like /report or a
+      // page refresh on a client-side route 404s. This re-encodes the path
+      // into a query string, sends the browser to index.html, and the inline
+      // script there decodes it back before React Router ever sees it.
+      var pathSegmentsToKeep = 1 // keep "/bev-issue-tracker"
+      var l = window.location
+      l.replace(
+        l.protocol +
+          '//' +
+          l.hostname +
+          (l.port ? ':' + l.port : '') +
+          l.pathname.split('/').slice(0, 1 + pathSegmentsToKeep).join('/') +
+          '/?/' +
+          l.pathname.slice(1).split('/').slice(pathSegmentsToKeep).join('/').replace(/&/g, '~and~') +
+          (l.search ? '&' + l.search.slice(1).replace(/&/g, '~and~') : '') +
+          l.hash,
+      )
+    </script>
+  </head>
+  <body></body>
+</html>

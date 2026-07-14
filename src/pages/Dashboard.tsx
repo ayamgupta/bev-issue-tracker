@@ -1,36 +1,50 @@
-import { useEffect, useState } from 'react'
-import { CAR_MODELS, type CarModel } from '../data/carData'
-import { fetchIssueFrequency, fetchSatisfaction, fetchSummary } from '../lib/api'
-import type { AnalyticsSummary, IssueFrequencyRow, SatisfactionRow } from '../lib/api'
+import { useEffect, useMemo, useState } from 'react'
+import { CAR_MODELS, VARIANTS_BY_MODEL, type CarModel } from '../data/carData'
+import { fetchIssueFrequency, fetchSatisfaction, fetchSoftwareVersions, fetchSummary } from '../lib/api'
+import type { AnalyticsSummary, IssueFrequencyRow, SatisfactionRow, SoftwareVersionRow } from '../lib/api'
 import { IssueBarChart } from '../components/IssueBarChart'
 import { SatisfactionCard } from '../components/SatisfactionCard'
 
 type ModelFilter = 'All' | CarModel
+type VariantFilter = 'All' | string
 type SeverityFilter = 'All' | 'major' | 'minor'
+
+const ALL_VARIANTS = Array.from(new Set(Object.values(VARIANTS_BY_MODEL).flat()))
 
 export function Dashboard() {
   const [summary, setSummary] = useState<AnalyticsSummary | null>(null)
   const [issues, setIssues] = useState<IssueFrequencyRow[]>([])
   const [satisfaction, setSatisfaction] = useState<SatisfactionRow[]>([])
+  const [softwareVersions, setSoftwareVersions] = useState<SoftwareVersionRow[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
 
   const [modelFilter, setModelFilter] = useState<ModelFilter>('All')
+  const [variantFilter, setVariantFilter] = useState<VariantFilter>('All')
   const [severityFilter, setSeverityFilter] = useState<SeverityFilter>('All')
 
   useEffect(() => {
-    Promise.all([fetchSummary(), fetchIssueFrequency(), fetchSatisfaction()])
-      .then(([s, i, sat]) => {
+    Promise.all([fetchSummary(), fetchIssueFrequency(), fetchSatisfaction(), fetchSoftwareVersions()])
+      .then(([s, i, sat, sv]) => {
         setSummary(s)
         setIssues(i)
         setSatisfaction(sat)
+        setSoftwareVersions(sv)
       })
       .catch((err) => setError(err instanceof Error ? err.message : 'Failed to load analytics'))
       .finally(() => setLoading(false))
   }, [])
 
+  const variantOptions = modelFilter === 'All' ? ALL_VARIANTS : VARIANTS_BY_MODEL[modelFilter]
+
+  function handleModelFilterChange(value: ModelFilter) {
+    setModelFilter(value)
+    setVariantFilter('All')
+  }
+
   const filteredIssues = issues
     .filter((row) => modelFilter === 'All' || row.car_model === modelFilter)
+    .filter((row) => variantFilter === 'All' || row.variant === variantFilter)
     .filter((row) => severityFilter === 'All' || row.severity === severityFilter)
     .reduce<IssueFrequencyRow[]>((acc, row) => {
       const existing = acc.find((r) => r.issue === row.issue && r.severity === row.severity)
@@ -42,6 +56,19 @@ export function Dashboard() {
       return acc
     }, [])
     .sort((a, b) => b.occurrences - a.occurrences)
+
+  const softwareVersionsByModel = useMemo(() => {
+    const grouped = new Map<CarModel, SoftwareVersionRow[]>()
+    for (const row of softwareVersions) {
+      const list = grouped.get(row.car_model) ?? []
+      list.push(row)
+      grouped.set(row.car_model, list)
+    }
+    for (const list of grouped.values()) {
+      list.sort((a, b) => b.occurrences - a.occurrences)
+    }
+    return grouped
+  }, [softwareVersions])
 
   return (
     <div className="mx-auto max-w-6xl px-6 py-12">
@@ -73,8 +100,13 @@ export function Dashboard() {
               <div className="flex flex-wrap gap-2">
                 <FilterSelect
                   value={modelFilter}
-                  onChange={(v) => setModelFilter(v as ModelFilter)}
+                  onChange={(v) => handleModelFilterChange(v as ModelFilter)}
                   options={['All', ...CAR_MODELS]}
+                />
+                <FilterSelect
+                  value={variantFilter}
+                  onChange={(v) => setVariantFilter(v)}
+                  options={['All', ...variantOptions]}
                 />
                 <FilterSelect
                   value={severityFilter}
@@ -108,6 +140,35 @@ export function Dashboard() {
               )}
               {satisfaction.map((row) => (
                 <SatisfactionCard key={row.car_model} row={row} verdict={satisfactionVerdict(row.avg_overall)} />
+              ))}
+            </div>
+          </section>
+
+          <section className="mt-10">
+            <h2 className="font-semibold text-ink-900 dark:text-ink-50">Software versions in the wild</h2>
+            <p className="mt-1 text-sm text-ink-500">
+              Self-reported at submission time. Check yours: My Vehicle → External → press and hold the lock button
+              for 10 seconds.
+            </p>
+            <div className="mt-4 grid gap-6 sm:grid-cols-3">
+              {softwareVersions.length === 0 && (
+                <p className="text-sm text-ink-500">No software versions reported yet.</p>
+              )}
+              {CAR_MODELS.filter((m) => softwareVersionsByModel.has(m)).map((model) => (
+                <div
+                  key={model}
+                  className="rounded-2xl border border-ink-200 bg-white p-5 dark:border-ink-800 dark:bg-ink-900"
+                >
+                  <h3 className="font-semibold text-ink-900 dark:text-ink-50">{model}</h3>
+                  <div className="mt-3 space-y-2">
+                    {softwareVersionsByModel.get(model)!.map((row) => (
+                      <div key={row.software_version} className="flex items-center justify-between text-sm">
+                        <span className="text-ink-600 dark:text-ink-300">{row.software_version}</span>
+                        <span className="tabular-nums text-ink-900 dark:text-ink-50">{row.occurrences}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               ))}
             </div>
           </section>

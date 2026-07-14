@@ -18,6 +18,7 @@ export interface ReportFormValues {
   serviceRating: number
   overallRating: number
   notes: string
+  softwareVersion: string
 }
 
 interface ReportFormFieldsProps {
@@ -104,6 +105,19 @@ export function ReportFormFields({ values, onChange }: ReportFormFieldsProps) {
               onChange={(e) => onChange('serviceCenter', e.target.value)}
               className="mt-1 w-full rounded-lg border border-ink-300 bg-white px-3 py-2 dark:border-ink-700 dark:bg-ink-950"
             />
+          </label>
+          <label className="block text-sm sm:col-span-2">
+            <span className="font-medium text-ink-700 dark:text-ink-200">Current software version</span>
+            <input
+              type="text"
+              value={values.softwareVersion}
+              onChange={(e) => onChange('softwareVersion', e.target.value)}
+              placeholder="e.g. 2.4.1"
+              className="mt-1 w-full rounded-lg border border-ink-300 bg-white px-3 py-2 dark:border-ink-700 dark:bg-ink-950"
+            />
+            <span className="mt-1 block text-xs text-ink-500">
+              To check: My Vehicle → External → press and hold the lock button for 10 seconds.
+            </span>
           </label>
         </div>
       </section>
