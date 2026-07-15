@@ -140,6 +140,28 @@ export function Resources() {
       </p>
 
       <section className="mt-10">
+        <h2 className="text-xl font-semibold text-ink-900 dark:text-ink-50">Owner's manuals</h2>
+        <p className="mt-2 max-w-2xl text-sm text-ink-500">
+          Mahindra only publishes these as a view-only page, with no official download option. These PDF copies come
+          from{' '}
+          <a
+            href="https://github.com/chiragkrishna/Mahindra-eSUVs-Manual-Downloader"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-medium text-brand-500 hover:underline"
+          >
+            chiragkrishna/Mahindra-eSUVs-Manual-Downloader
+          </a>{' '}
+          — thanks to that project for making them available. Not affiliated with Mahindra.
+        </p>
+        <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {OWNERS_MANUALS.map((doc) => (
+            <DocCard key={doc.file} doc={doc} />
+          ))}
+        </div>
+      </section>
+
+      <section className="mt-12">
         <h2 className="text-xl font-semibold text-ink-900 dark:text-ink-50">Brochures</h2>
         <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {BROCHURES.map((doc) => (
@@ -157,28 +179,6 @@ export function Resources() {
         </p>
         <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {SERVICE_GUIDES.map((doc) => (
-            <DocCard key={doc.file} doc={doc} />
-          ))}
-        </div>
-      </section>
-
-      <section className="mt-12">
-        <h2 className="text-xl font-semibold text-ink-900 dark:text-ink-50">Owner's manuals</h2>
-        <p className="mt-2 max-w-2xl text-sm text-ink-500">
-          Mahindra only publishes these as a view-only page, with no official download option. These PDF copies come
-          from{' '}
-          <a
-            href="https://github.com/chiragkrishna/Mahindra-eSUVs-Manual-Downloader"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="font-medium text-brand-500 hover:underline"
-          >
-            chiragkrishna/Mahindra-eSUVs-Manual-Downloader
-          </a>{' '}
-          — thanks to that project for making them available. Not affiliated with Mahindra.
-        </p>
-        <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {OWNERS_MANUALS.map((doc) => (
             <DocCard key={doc.file} doc={doc} />
           ))}
         </div>
