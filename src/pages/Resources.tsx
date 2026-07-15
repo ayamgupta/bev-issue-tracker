@@ -162,15 +162,6 @@ export function Resources() {
       </section>
 
       <section className="mt-12">
-        <h2 className="text-xl font-semibold text-ink-900 dark:text-ink-50">Brochures</h2>
-        <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {BROCHURES.map((doc) => (
-            <DocCard key={doc.file} doc={doc} />
-          ))}
-        </div>
-      </section>
-
-      <section className="mt-12">
         <h2 className="text-xl font-semibold text-ink-900 dark:text-ink-50">Warranty &amp; service guides</h2>
         <p className="mt-2 max-w-2xl text-sm text-ink-500">
           Official service schedules and warranty terms. Mahindra restricts full dealer-level workshop/repair manuals
@@ -179,6 +170,15 @@ export function Resources() {
         </p>
         <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {SERVICE_GUIDES.map((doc) => (
+            <DocCard key={doc.file} doc={doc} />
+          ))}
+        </div>
+      </section>
+
+      <section className="mt-12">
+        <h2 className="text-xl font-semibold text-ink-900 dark:text-ink-50">Brochures</h2>
+        <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {BROCHURES.map((doc) => (
             <DocCard key={doc.file} doc={doc} />
           ))}
         </div>
