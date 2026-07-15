@@ -19,8 +19,19 @@ export interface SoftwareVersionRow {
 export interface TyreBrandRow {
   car_model: CarModel
   tyre_brand: string
+  odo_range: string
+  odo_range_order: number
   occurrences: number
   avg_life_remaining_pct: number | null
+}
+
+export interface PublicNoteRow {
+  id: string
+  car_model: CarModel
+  city: string
+  notes: string
+  created_at: string
+  theme: string
 }
 
 export interface SatisfactionRow {
@@ -74,6 +85,15 @@ export async function fetchTyreBrands(): Promise<TyreBrandRow[]> {
     .from('analytics_tyre_brands')
     .select('*')
     .order('occurrences', { ascending: false })
+  if (error) throw error
+  return data ?? []
+}
+
+export async function fetchPublicNotes(): Promise<PublicNoteRow[]> {
+  const { data, error } = await supabase
+    .from('analytics_public_notes')
+    .select('*')
+    .order('created_at', { ascending: false })
   if (error) throw error
   return data ?? []
 }

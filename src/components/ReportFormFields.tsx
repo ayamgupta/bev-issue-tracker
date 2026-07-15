@@ -18,6 +18,7 @@ export interface ReportFormValues {
   serviceRating: number
   overallRating: number
   notes: string
+  notesPublicOptIn: boolean
   softwareVersion: string
   tyreBrand: string
   tyreLifeRemainingPct: string
@@ -114,11 +115,12 @@ export function ReportFormFields({ values, onChange }: ReportFormFieldsProps) {
               type="text"
               value={values.softwareVersion}
               onChange={(e) => onChange('softwareVersion', e.target.value)}
-              placeholder="e.g. 2.4.1"
+              placeholder="e.g. A15.33.912"
               className="mt-1 w-full rounded-lg border border-ink-300 bg-white px-3 py-2 dark:border-ink-700 dark:bg-ink-950"
             />
             <span className="mt-1 block text-xs text-ink-500">
-              To check: My Vehicle → External → press and hold the lock button for 10 seconds.
+              Enter the ECU Version exactly as shown, e.g. A15.33.912. To check: My Vehicle → External → press and
+              hold the lock button for 10 seconds → ECU Version.
             </span>
           </label>
           <label className="block text-sm">
@@ -188,6 +190,19 @@ export function ReportFormFields({ values, onChange }: ReportFormFieldsProps) {
           placeholder="Optional free-text details about your experience"
           className="mt-3 w-full rounded-lg border border-ink-300 bg-white px-3 py-2 dark:border-ink-700 dark:bg-ink-950"
         />
+        <label className="mt-3 flex items-start gap-2 text-sm">
+          <input
+            type="checkbox"
+            className="mt-0.5 h-4 w-4 accent-brand-500"
+            checked={values.notesPublicOptIn}
+            onChange={(e) => onChange('notesPublicOptIn', e.target.checked)}
+          />
+          <span className="text-ink-600 dark:text-ink-300">
+            Share the note above publicly as an anonymous quote on the dashboard (your model and city may be shown,
+            never your name or contact details). Please don't include any personal information in it — it will be
+            shown exactly as written.
+          </span>
+        </label>
       </section>
     </>
   )

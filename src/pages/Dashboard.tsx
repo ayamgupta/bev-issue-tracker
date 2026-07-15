@@ -1,9 +1,24 @@
 import { useEffect, useMemo, useState } from 'react'
 import { CAR_MODELS, VARIANTS_BY_MODEL, type CarModel } from '../data/carData'
 import { FORUM_ISSUES, FORUM_SIGNAL_WEIGHT } from '../data/forumIssues'
-import { fetchIssueFrequency, fetchSatisfaction, fetchSoftwareVersions, fetchSummary, fetchTyreBrands } from '../lib/api'
-import type { AnalyticsSummary, IssueFrequencyRow, SatisfactionRow, SoftwareVersionRow, TyreBrandRow } from '../lib/api'
+import {
+  fetchIssueFrequency,
+  fetchPublicNotes,
+  fetchSatisfaction,
+  fetchSoftwareVersions,
+  fetchSummary,
+  fetchTyreBrands,
+} from '../lib/api'
+import type {
+  AnalyticsSummary,
+  IssueFrequencyRow,
+  PublicNoteRow,
+  SatisfactionRow,
+  SoftwareVersionRow,
+  TyreBrandRow,
+} from '../lib/api'
 import { IssueBarChart, type RankedIssueRow } from '../components/IssueBarChart'
+import { PublicNotes } from '../components/PublicNotes'
 import { SatisfactionCard } from '../components/SatisfactionCard'
 
 type ModelFilter = 'All' | CarModel
@@ -18,6 +33,7 @@ export function Dashboard() {
   const [satisfaction, setSatisfaction] = useState<SatisfactionRow[]>([])
   const [softwareVersions, setSoftwareVersions] = useState<SoftwareVersionRow[]>([])
   const [tyreBrands, setTyreBrands] = useState<TyreBrandRow[]>([])
+  const [publicNotes, setPublicNotes] = useState<PublicNoteRow[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
 
@@ -26,13 +42,21 @@ export function Dashboard() {
   const [severityFilter, setSeverityFilter] = useState<SeverityFilter>('All')
 
   useEffect(() => {
-    Promise.all([fetchSummary(), fetchIssueFrequency(), fetchSatisfaction(), fetchSoftwareVersions(), fetchTyreBrands()])
-      .then(([s, i, sat, sv, tb]) => {
+    Promise.all([
+      fetchSummary(),
+      fetchIssueFrequency(),
+      fetchSatisfaction(),
+      fetchSoftwareVersions(),
+      fetchTyreBrands(),
+      fetchPublicNotes(),
+    ])
+      .then(([s, i, sat, sv, tb, pn]) => {
         setSummary(s)
         setIssues(i)
         setSatisfaction(sat)
         setSoftwareVersions(sv)
         setTyreBrands(tb)
+        setPublicNotes(pn)
       })
       .catch((err) => setError(err instanceof Error ? err.message : 'Failed to load analytics'))
       .finally(() => setLoading(false))
@@ -109,17 +133,26 @@ export function Dashboard() {
     return grouped
   }, [softwareVersions])
 
-  const tyreBrandsByModel = useMemo(() => {
-    const grouped = new Map<CarModel, TyreBrandRow[]>()
+  // Tyre life remaining is meaningless without mileage context (70% left means
+  // very different things at 5,000km vs 50,000km), so group by model, then by
+  // odometer range, then by brand within that range.
+  const tyreRangesByModel = useMemo(() => {
+    const byModel = new Map<CarModel, Map<string, { order: number; rows: TyreBrandRow[] }>>()
     for (const row of tyreBrands) {
-      const list = grouped.get(row.car_model) ?? []
-      list.push(row)
-      grouped.set(row.car_model, list)
+      const ranges = byModel.get(row.car_model) ?? new Map()
+      const range = ranges.get(row.odo_range) ?? { order: row.odo_range_order, rows: [] }
+      range.rows.push(row)
+      ranges.set(row.odo_range, range)
+      byModel.set(row.car_model, ranges)
     }
-    for (const list of grouped.values()) {
-      list.sort((a, b) => b.occurrences - a.occurrences)
+    const result = new Map<CarModel, { range: string; rows: TyreBrandRow[] }[]>()
+    for (const [model, ranges] of byModel) {
+      const sorted = Array.from(ranges.entries())
+        .sort((a, b) => a[1].order - b[1].order)
+        .map(([range, { rows }]) => ({ range, rows: rows.sort((a, b) => b.occurrences - a.occurrences) }))
+      result.set(model, sorted)
     }
-    return grouped
+    return result
   }, [tyreBrands])
 
   return (
@@ -206,8 +239,8 @@ export function Dashboard() {
           <section className="mt-10">
             <h2 className="font-semibold text-ink-900 dark:text-ink-50">Software versions in the wild</h2>
             <p className="mt-1 text-sm text-ink-500">
-              Self-reported at submission time. Check yours: My Vehicle → External → press and hold the lock button
-              for 10 seconds.
+              Self-reported ECU Version at submission time (format: A15.33.912). Check yours: My Vehicle → External →
+              press and hold the lock button for 10 seconds → ECU Version.
             </p>
             <div className="mt-4 grid gap-6 sm:grid-cols-3">
               {softwareVersions.length === 0 && (
@@ -235,29 +268,50 @@ export function Dashboard() {
           <section className="mt-10">
             <h2 className="font-semibold text-ink-900 dark:text-ink-50">Tyres in the wild</h2>
             <p className="mt-1 text-sm text-ink-500">
-              Self-reported brand and estimated remaining life — useful if you're wondering whether the OEM rubber
-              is holding up.
+              Self-reported brand and estimated remaining life, grouped by odometer reading — 70% life left means
+              very different things at 5,000km vs 50,000km.
             </p>
             <div className="mt-4 grid gap-6 sm:grid-cols-3">
               {tyreBrands.length === 0 && <p className="text-sm text-ink-500">No tyre data reported yet.</p>}
-              {CAR_MODELS.filter((m) => tyreBrandsByModel.has(m)).map((model) => (
+              {CAR_MODELS.filter((m) => tyreRangesByModel.has(m)).map((model) => (
                 <div
                   key={model}
                   className="rounded-2xl border border-ink-200 bg-white p-5 dark:border-ink-800 dark:bg-ink-900"
                 >
                   <h3 className="font-semibold text-ink-900 dark:text-ink-50">{model}</h3>
-                  <div className="mt-3 space-y-2">
-                    {tyreBrandsByModel.get(model)!.map((row) => (
-                      <div key={row.tyre_brand} className="flex items-center justify-between text-sm">
-                        <span className="text-ink-600 dark:text-ink-300">{row.tyre_brand}</span>
-                        <span className="tabular-nums text-ink-900 dark:text-ink-50">
-                          {row.occurrences}×{row.avg_life_remaining_pct !== null ? ` · ${row.avg_life_remaining_pct}% life left avg` : ''}
-                        </span>
+                  <div className="mt-3 space-y-4">
+                    {tyreRangesByModel.get(model)!.map(({ range, rows }) => (
+                      <div key={range}>
+                        <p className="text-xs font-medium text-ink-500">Owners with {range} on the odometer:</p>
+                        <div className="mt-1.5 space-y-1.5">
+                          {rows.map((row) => (
+                            <div key={row.tyre_brand} className="flex items-center justify-between text-sm">
+                              <span className="text-ink-600 dark:text-ink-300">{row.tyre_brand}</span>
+                              <span className="tabular-nums text-ink-900 dark:text-ink-50">
+                                {row.avg_life_remaining_pct !== null
+                                  ? `${row.avg_life_remaining_pct}% tyre life left avg`
+                                  : 'no data'}{' '}
+                                ({row.occurrences} report{row.occurrences === 1 ? '' : 's'})
+                              </span>
+                            </div>
+                          ))}
+                        </div>
                       </div>
                     ))}
                   </div>
                 </div>
               ))}
+            </div>
+          </section>
+
+          <section className="mt-10">
+            <h2 className="font-semibold text-ink-900 dark:text-ink-50">What owners are saying</h2>
+            <p className="mt-1 text-sm text-ink-500">
+              Real quotes from the "Anything else?" field, grouped by topic — shown only for reports where the owner
+              explicitly opted in to share it publicly.
+            </p>
+            <div className="mt-4 rounded-2xl border border-ink-200 bg-white p-6 dark:border-ink-800 dark:bg-ink-900">
+              <PublicNotes notes={publicNotes} />
             </div>
           </section>
         </>

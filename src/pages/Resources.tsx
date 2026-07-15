@@ -75,24 +75,31 @@ const SERVICE_GUIDES: ResourceDoc[] = [
 const OWNERS_MANUALS: ResourceDoc[] = [
   {
     title: 'BE 6 Vehicle Manual',
-    description: 'Quick-reference vehicle manual covering controls, features and specs.',
+    description: 'Full vehicle manual covering every control, feature and maintenance procedure.',
     file: `${brochuresBase}be6-vehicle-manual.pdf`,
     models: ['BE 6'],
-    sizeMb: 3.1,
+    sizeMb: 17.7,
+  },
+  {
+    title: 'BE 6 FE Vehicle Manual',
+    description: 'Full vehicle manual for the BE 6 FE variant.',
+    file: `${brochuresBase}be6-fe-vehicle-manual.pdf`,
+    models: ['BE 6'],
+    sizeMb: 12.2,
   },
   {
     title: 'XEV 9e Vehicle Manual',
-    description: 'Quick-reference vehicle manual covering controls, features and specs.',
+    description: 'Full vehicle manual covering every control, feature and maintenance procedure.',
     file: `${brochuresBase}xev9e-vehicle-manual.pdf`,
     models: ['XEV 9e'],
-    sizeMb: 2.8,
+    sizeMb: 18.7,
   },
   {
-    title: "XEV 9e Owner's Manual (full)",
-    description: 'Complete 757-page owner’s manual — every control, warning light and maintenance procedure.',
-    file: `${brochuresBase}xev9e-owners-manual.pdf`,
-    models: ['XEV 9e'],
-    sizeMb: 18.5,
+    title: 'XEV 9S Vehicle Manual',
+    description: 'Full vehicle manual covering every control, feature and maintenance procedure.',
+    file: `${brochuresBase}xev9s-vehicle-manual.pdf`,
+    models: ['XEV 9S'],
+    sizeMb: 19.5,
   },
 ]
 
@@ -158,8 +165,17 @@ export function Resources() {
       <section className="mt-12">
         <h2 className="text-xl font-semibold text-ink-900 dark:text-ink-50">Owner's manuals</h2>
         <p className="mt-2 max-w-2xl text-sm text-ink-500">
-          Full owner's manuals mirrored from Team-BHP forum attachments. We haven't found a direct-download copy for
-          the XEV 9S yet — Mahindra only hosts it behind an HTML viewer.
+          Mahindra only publishes these as a view-only page, with no official download option. These PDF copies come
+          from{' '}
+          <a
+            href="https://github.com/chiragkrishna/Mahindra-eSUVs-Manual-Downloader"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-medium text-brand-500 hover:underline"
+          >
+            chiragkrishna/Mahindra-eSUVs-Manual-Downloader
+          </a>{' '}
+          — thanks to that project for making them available. Not affiliated with Mahindra.
         </p>
         <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {OWNERS_MANUALS.map((doc) => (

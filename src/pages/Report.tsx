@@ -20,6 +20,7 @@ const initialValues: ReportFormValues = {
   serviceRating: 0,
   overallRating: 0,
   notes: '',
+  notesPublicOptIn: false,
   softwareVersion: '',
   tyreBrand: '',
   tyreLifeRemainingPct: '',
@@ -77,6 +78,7 @@ export function Report() {
         service_rating: values.serviceRating,
         overall_rating: values.overallRating,
         notes: values.notes || undefined,
+        notes_public_opt_in: values.notesPublicOptIn,
         software_version: values.softwareVersion || undefined,
         tyre_brand: values.tyreBrand || undefined,
         tyre_life_remaining_pct: values.tyreLifeRemainingPct ? Number(values.tyreLifeRemainingPct) : undefined,
@@ -118,7 +120,7 @@ export function Report() {
         <ReportFormFields values={values} onChange={handleFieldChange} />
 
         <section className="rounded-2xl border border-ink-200 bg-white p-6 dark:border-ink-800 dark:bg-ink-900">
-          <h2 className="font-semibold text-ink-900 dark:text-ink-50">Optional: help us verify this is real</h2>
+          <h2 className="font-semibold text-ink-900 dark:text-ink-50">Help us verify this is real</h2>
           <p className="mt-1 text-sm text-ink-500">
             Never shown publicly, and stored in a separate, locked-down table from your report. Used only to (1)
             catch duplicate/fake submissions and (2) match this submission to an earlier one from the same
@@ -127,7 +129,7 @@ export function Report() {
           </p>
           <div className="mt-4 grid gap-4 sm:grid-cols-2">
             <label className="block text-sm">
-              <span className="font-medium text-ink-700 dark:text-ink-200">Registration number</span>
+              <span className="font-medium text-ink-700 dark:text-ink-200">Vehicle Registration number</span>
               <input
                 type="text"
                 value={regNumber}

@@ -16,6 +16,7 @@ export interface ReportRow {
   service_rating: number
   overall_rating: number
   notes: string | null
+  notes_public_opt_in: boolean
   software_version: string | null
   tyre_brand: string | null
   tyre_life_remaining_pct: number | null
@@ -39,6 +40,7 @@ export interface ReportSubmission {
   service_rating: number
   overall_rating: number
   notes?: string
+  notes_public_opt_in?: boolean
   software_version?: string
   tyre_brand?: string
   tyre_life_remaining_pct?: number
