@@ -83,31 +83,33 @@ export function IssueBarChart({ rows }: IssueBarChartProps) {
       </div>
 
       {showTable ? (
-        <table className="mt-4 w-full text-left text-sm">
-          <thead>
-            <tr className="border-b" style={{ borderColor: 'var(--gridline)' }}>
-              <th className="py-2 font-medium text-[var(--text-secondary)]">Issue</th>
-              <th className="py-2 font-medium text-[var(--text-secondary)]">Severity</th>
-              <th className="py-2 text-right font-medium text-[var(--text-secondary)]">Reports</th>
-            </tr>
-          </thead>
-          <tbody>
-            {rows.map((r) => (
-              <tr key={`${r.issue}-${r.severity}`} className="border-b" style={{ borderColor: 'var(--gridline)' }}>
-                <td className="py-2 text-[var(--text-primary)]">
-                  {r.issue}
-                  {r.forumSignal && (
-                    <span title={forumTitle(r)} className="ml-1.5 cursor-help">
-                      🌐
-                    </span>
-                  )}
-                </td>
-                <td className="py-2 capitalize text-[var(--text-secondary)]">{r.severity}</td>
-                <td className="py-2 text-right tabular-nums text-[var(--text-primary)]">{r.occurrences}</td>
+        <div className="mt-4 overflow-x-auto">
+          <table className="w-full min-w-[420px] text-left text-sm">
+            <thead>
+              <tr className="border-b" style={{ borderColor: 'var(--gridline)' }}>
+                <th className="py-2 font-medium text-[var(--text-secondary)]">Issue</th>
+                <th className="py-2 font-medium text-[var(--text-secondary)]">Severity</th>
+                <th className="py-2 text-right font-medium text-[var(--text-secondary)]">Reports</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {rows.map((r) => (
+                <tr key={`${r.issue}-${r.severity}`} className="border-b" style={{ borderColor: 'var(--gridline)' }}>
+                  <td className="py-2 text-[var(--text-primary)]">
+                    {r.issue}
+                    {r.forumSignal && (
+                      <span title={forumTitle(r)} className="ml-1.5 cursor-help">
+                        🌐
+                      </span>
+                    )}
+                  </td>
+                  <td className="py-2 capitalize text-[var(--text-secondary)]">{r.severity}</td>
+                  <td className="py-2 text-right tabular-nums text-[var(--text-primary)]">{r.occurrences}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       ) : (
         <div className="mt-4 space-y-3">
           {rows.slice(0, 10).map((r) => (

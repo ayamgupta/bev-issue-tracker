@@ -232,7 +232,7 @@ export function KnownIssues() {
   return (
     <div>
       <div className="border-b border-ink-200/70 bg-gradient-to-br from-brand-500/10 via-transparent to-transparent dark:border-ink-800/70">
-        <div className="mx-auto max-w-6xl px-6 py-14">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 py-14">
           <h1 className="text-3xl font-semibold text-ink-900 dark:text-ink-50 sm:text-4xl">Known Issues &amp; Fixes</h1>
           <p className="mt-3 max-w-2xl text-ink-500">
             Battle scars and duct-tape wisdom from owners who've actually lived with these cars past the honeymoon
@@ -259,7 +259,7 @@ export function KnownIssues() {
         </div>
       </div>
 
-      <div className="mx-auto max-w-6xl px-6 py-10">
+      <div className="mx-auto max-w-6xl px-4 sm:px-6 py-10">
         <div className="relative">
           <svg
             className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-ink-400"

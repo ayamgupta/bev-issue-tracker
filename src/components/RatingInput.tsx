@@ -6,7 +6,7 @@ interface RatingInputProps {
 
 export function RatingInput({ label, value, onChange }: RatingInputProps) {
   return (
-    <div className="flex items-center justify-between gap-4 py-2">
+    <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 py-2">
       <span className="text-sm font-medium text-ink-700 dark:text-ink-200">{label}</span>
       <div className="flex gap-1">
         {[1, 2, 3, 4, 5].map((n) => (
@@ -15,7 +15,7 @@ export function RatingInput({ label, value, onChange }: RatingInputProps) {
             type="button"
             aria-label={`${label}: ${n} out of 5`}
             onClick={() => onChange(n)}
-            className={`h-8 w-8 rounded-md border text-sm font-semibold transition-colors ${
+            className={`h-8 w-8 shrink-0 rounded-md border text-sm font-semibold transition-colors ${
               n <= value
                 ? 'border-brand-500 bg-brand-500 text-white'
                 : 'border-ink-300 text-ink-400 hover:border-brand-400 dark:border-ink-700'

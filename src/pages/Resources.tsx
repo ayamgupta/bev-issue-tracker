@@ -132,7 +132,7 @@ function DocCard({ doc }: { doc: ResourceDoc }) {
 
 export function Resources() {
   return (
-    <div className="mx-auto max-w-6xl px-6 py-12">
+    <div className="mx-auto max-w-6xl px-4 sm:px-6 py-12">
       <h1 className="text-3xl font-semibold text-ink-900 dark:text-ink-50">Resources</h1>
       <p className="mt-3 max-w-2xl text-ink-500">
         Official brochures and documentation for the Mahindra BE 6, XEV 9e and XEV 9S, collected in one place. Mirrored

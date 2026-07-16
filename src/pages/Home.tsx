@@ -5,39 +5,39 @@ import { CarImage } from '../components/CarImage'
 export function Home() {
   return (
     <div>
-      <section className="relative overflow-hidden">
+      <section className="relative isolate overflow-hidden">
         <CarImage
           src={`${import.meta.env.BASE_URL}images/hero.png`}
           alt="Mahindra BEV lineup — BE 6, XEV 9e, XEV 9S"
-          className="h-[420px] w-full object-cover"
+          className="absolute inset-0 -z-10 h-full w-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-ink-950/95 via-ink-950/50 to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-r from-ink-950/90 via-ink-950/40 to-transparent sm:to-transparent" />
-        <div className="absolute inset-0 flex items-end">
-          <div className="mx-auto w-full max-w-6xl px-6 pb-12 text-white">
-            <h1 className="text-4xl font-semibold tracking-tight drop-shadow-[0_2px_12px_rgba(0,0,0,0.6)] sm:text-5xl">
+        <div className="absolute inset-0 -z-10 bg-gradient-to-t from-ink-950/95 via-ink-950/50 to-transparent" />
+        <div className="absolute inset-0 -z-10 bg-gradient-to-r from-ink-950/90 via-ink-950/40 to-transparent sm:to-transparent" />
+        <div className="flex min-h-[320px] items-end sm:min-h-[420px]">
+          <div className="mx-auto w-full max-w-6xl px-4 pb-8 pt-24 text-white sm:px-6 sm:pb-12">
+            <h1 className="text-3xl font-semibold tracking-tight drop-shadow-[0_2px_12px_rgba(0,0,0,0.6)] sm:text-5xl">
               What's it really like to own one?
             </h1>
-            <p className="mt-4 max-w-xl text-lg text-ink-100/90 drop-shadow-[0_1px_6px_rgba(0,0,0,0.6)]">
+            <p className="mt-3 max-w-xl text-base text-ink-100/90 drop-shadow-[0_1px_6px_rgba(0,0,0,0.6)] sm:mt-4 sm:text-lg">
               An independent, owner-driven issue tracker and analytics dashboard for the Mahindra BE 6, XEV 9e and
               XEV 9S. Anonymous by default. No affiliation with Mahindra.
             </p>
-            <div className="mt-6 flex flex-wrap gap-3">
+            <div className="mt-5 flex flex-wrap gap-2.5 sm:mt-6 sm:gap-3">
               <Link
                 to="/report"
-                className="rounded-lg bg-brand-500 px-5 py-3 text-sm font-semibold text-white hover:bg-brand-600"
+                className="rounded-lg bg-brand-500 px-4 py-2.5 text-sm font-semibold text-white hover:bg-brand-600 sm:px-5 sm:py-3"
               >
                 Report your experience
               </Link>
               <Link
                 to="/dashboard"
-                className="rounded-lg bg-white/10 px-5 py-3 text-sm font-semibold text-white ring-1 ring-white/30 backdrop-blur hover:bg-white/20"
+                className="rounded-lg bg-white/10 px-4 py-2.5 text-sm font-semibold text-white ring-1 ring-white/30 backdrop-blur hover:bg-white/20 sm:px-5 sm:py-3"
               >
                 View analytics
               </Link>
               <Link
                 to="/known-issues"
-                className="rounded-lg bg-white/10 px-5 py-3 text-sm font-semibold text-white ring-1 ring-white/30 backdrop-blur hover:bg-white/20"
+                className="rounded-lg bg-white/10 px-4 py-2.5 text-sm font-semibold text-white ring-1 ring-white/30 backdrop-blur hover:bg-white/20 sm:px-5 sm:py-3"
               >
                 Known issues &amp; fixes
               </Link>
@@ -46,7 +46,7 @@ export function Home() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-6xl px-6 py-14">
+      <section className="mx-auto max-w-6xl px-4 sm:px-6 py-14">
         <h2 className="text-xl font-semibold text-ink-900 dark:text-ink-50">The models we track</h2>
         <div className="mt-6 grid gap-6 sm:grid-cols-3">
           {CAR_MODELS.map((model) => (
@@ -64,7 +64,7 @@ export function Home() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-6xl px-6 pb-16">
+      <section className="mx-auto max-w-6xl px-4 sm:px-6 pb-16">
         <div className="grid gap-6 rounded-2xl border border-ink-200 bg-white p-8 dark:border-ink-800 dark:bg-ink-900 sm:grid-cols-3">
           <div>
             <h3 className="font-semibold text-ink-900 dark:text-ink-50">1. Share your experience</h3>

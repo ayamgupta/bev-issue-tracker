@@ -96,7 +96,7 @@ export function Report() {
 
   if (status === 'success') {
     return (
-      <div className="mx-auto max-w-2xl px-6 py-20 text-center">
+      <div className="mx-auto max-w-2xl px-4 sm:px-6 py-20 text-center">
         <h1 className="text-2xl font-semibold text-ink-900 dark:text-ink-50">
           {wasUpdate ? 'Your report has been updated' : 'Thanks for sharing your experience'}
         </h1>
@@ -110,7 +110,7 @@ export function Report() {
   }
 
   return (
-    <div className="mx-auto max-w-2xl px-6 py-12">
+    <div className="mx-auto max-w-2xl px-4 sm:px-6 py-12">
       <h1 className="text-2xl font-semibold text-ink-900 dark:text-ink-50">Report your ownership experience</h1>
       <p className="mt-2 text-sm text-ink-500">
         Every field below except your car model, mileage, city and ratings is optional. Already submitted before and

@@ -156,7 +156,7 @@ export function Dashboard() {
   }, [tyreBrands])
 
   return (
-    <div className="mx-auto max-w-6xl px-6 py-12">
+    <div className="mx-auto max-w-6xl px-4 sm:px-6 py-12">
       <h1 className="text-2xl font-semibold text-ink-900 dark:text-ink-50">Owner-reported analytics</h1>
       <p className="mt-2 text-sm text-ink-500">
         Real owners, real gripes, zero brochure spin. Aggregated from community submissions — unverified reports are
