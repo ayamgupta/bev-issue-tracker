@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState, type FormEvent } from 'react'
+import { Link } from 'react-router-dom'
 import { CAR_MODELS, type CarModel } from '../data/carData'
 import {
   COMMUNITY_ISSUES,
@@ -238,9 +239,9 @@ export function KnownIssues() {
             Battle scars and duct-tape wisdom from owners who've actually lived with these cars past the honeymoon
             phase — the problems that show up, and the fixes that got them unstuck. Independent of the self-reported
             analytics on the{' '}
-            <a href="/dashboard" className="font-medium text-brand-500 hover:underline">
+            <Link to="/dashboard" className="font-medium text-brand-500 hover:underline">
               Dashboard
-            </a>
+            </Link>
             .
           </p>
           <p className="mt-2 max-w-2xl text-xs text-ink-500">
