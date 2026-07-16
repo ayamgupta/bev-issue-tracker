@@ -1,10 +1,11 @@
-import type { CarModel } from '../data/carData'
+import type { BatteryPack, CarModel } from '../data/carData'
 
 export interface ReportRow {
   id: string
   created_at: string
   car_model: CarModel
   variant: string
+  battery_pack: BatteryPack | null
   purchase_year: number
   odo_km: number
   city: string
@@ -29,6 +30,7 @@ export interface ReportSubmission {
   contact_number?: string
   car_model: CarModel
   variant: string
+  battery_pack?: BatteryPack
   purchase_year: number
   odo_km: number
   city: string

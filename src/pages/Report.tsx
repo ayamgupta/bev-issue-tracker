@@ -1,5 +1,5 @@
 import { useState, type FormEvent } from 'react'
-import { VARIANTS_BY_MODEL } from '../data/carData'
+import { BATTERY_PACKS, VARIANTS_BY_MODEL } from '../data/carData'
 import { ReportFormFields, type ReportFormValues } from '../components/ReportFormFields'
 import { Turnstile } from '../components/Turnstile'
 import { submitReport } from '../lib/api'
@@ -9,6 +9,7 @@ const currentYear = new Date().getFullYear()
 const initialValues: ReportFormValues = {
   carModel: 'BE 6',
   variant: VARIANTS_BY_MODEL['BE 6'][0],
+  batteryPack: BATTERY_PACKS[0],
   purchaseYear: currentYear,
   odoKm: '',
   city: '',
@@ -67,6 +68,7 @@ export function Report() {
         contact_number: contactNumber || undefined,
         car_model: values.carModel,
         variant: values.variant,
+        battery_pack: values.batteryPack,
         purchase_year: values.purchaseYear,
         odo_km: Number(values.odoKm),
         city: values.city.trim(),

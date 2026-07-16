@@ -1,4 +1,13 @@
-import { CAR_MODELS, MAJOR_ISSUES, MINOR_ISSUES, TYRE_BRAND_SUGGESTIONS, VARIANTS_BY_MODEL, type CarModel } from '../data/carData'
+import {
+  BATTERY_PACKS,
+  CAR_MODELS,
+  MAJOR_ISSUES,
+  MINOR_ISSUES,
+  TYRE_BRAND_SUGGESTIONS,
+  VARIANTS_BY_MODEL,
+  type BatteryPack,
+  type CarModel,
+} from '../data/carData'
 import { CheckboxGroup } from './CheckboxGroup'
 import { RatingInput } from './RatingInput'
 
@@ -7,6 +16,7 @@ const currentYear = new Date().getFullYear()
 export interface ReportFormValues {
   carModel: CarModel
   variant: string
+  batteryPack: BatteryPack
   purchaseYear: number
   odoKm: string
   city: string
@@ -64,6 +74,20 @@ export function ReportFormFields({ values, onChange }: ReportFormFieldsProps) {
               {VARIANTS_BY_MODEL[values.carModel].map((v) => (
                 <option key={v} value={v}>
                   {v}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label className="block text-sm">
+            <span className="font-medium text-ink-700 dark:text-ink-200">Battery pack *</span>
+            <select
+              value={values.batteryPack}
+              onChange={(e) => onChange('batteryPack', e.target.value as BatteryPack)}
+              className="mt-1 w-full rounded-lg border border-ink-300 bg-white px-3 py-2 dark:border-ink-700 dark:bg-ink-950"
+            >
+              {BATTERY_PACKS.map((b) => (
+                <option key={b} value={b}>
+                  {b}
                 </option>
               ))}
             </select>

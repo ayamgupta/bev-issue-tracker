@@ -25,6 +25,7 @@
 import { createClient } from 'jsr:@supabase/supabase-js@2'
 
 const CAR_MODELS = ['BE 6', 'XEV 9e', 'XEV 9S']
+const BATTERY_PACKS = ['59 kWh', '79 kWh']
 const RATE_LIMIT_WINDOW_HOURS = 6
 
 function corsHeaders(origin: string | null) {
@@ -97,6 +98,7 @@ Deno.serve(async (req) => {
     const {
       car_model,
       variant,
+      battery_pack,
       purchase_year,
       odo_km,
       city,
@@ -122,6 +124,9 @@ Deno.serve(async (req) => {
     }
     if (typeof variant !== 'string' || !variant.trim()) {
       return new Response(JSON.stringify({ error: 'Variant is required' }), { status: 400, headers })
+    }
+    if (battery_pack !== undefined && battery_pack !== null && !BATTERY_PACKS.includes(battery_pack)) {
+      return new Response(JSON.stringify({ error: 'Invalid battery pack' }), { status: 400, headers })
     }
     const currentYear = new Date().getFullYear()
     if (typeof purchase_year !== 'number' || purchase_year < 2023 || purchase_year > currentYear + 1) {
@@ -155,6 +160,7 @@ Deno.serve(async (req) => {
     const reportFields = {
       car_model,
       variant,
+      battery_pack: typeof battery_pack === 'string' ? battery_pack : null,
       purchase_year,
       odo_km,
       city: city.trim(),
