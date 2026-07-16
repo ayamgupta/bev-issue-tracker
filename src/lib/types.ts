@@ -48,3 +48,18 @@ export interface ReportSubmission {
   tyre_life_remaining_pct?: number
   turnstile_token: string
 }
+
+export interface CommunityTipRow {
+  id: string
+  created_at: string
+  car_model: CarModel | null
+  issue: string
+  fix: string
+}
+
+export interface CommunityTipSubmission {
+  car_model?: CarModel
+  issue: string
+  fix: string
+  turnstile_token: string
+}

@@ -1,5 +1,5 @@
 import { supabase } from './supabaseClient'
-import type { ReportRow, ReportSubmission } from './types'
+import type { CommunityTipRow, CommunityTipSubmission, ReportRow, ReportSubmission } from './types'
 import type { CarModel } from '../data/carData'
 
 export interface IssueFrequencyRow {
@@ -117,6 +117,25 @@ export async function fetchRecentReports(limit = 20): Promise<ReportRow[]> {
  */
 export async function submitReport(payload: ReportSubmission): Promise<{ id: string; updated?: boolean; duplicate_suspected?: boolean }> {
   const { data, error } = await supabase.functions.invoke('submit-report', {
+    body: payload,
+  })
+  if (error) throw error
+  if (data?.error) throw new Error(data.error)
+  return data
+}
+
+export async function fetchCommunityTips(): Promise<CommunityTipRow[]> {
+  const { data, error } = await supabase
+    .from('community_tips')
+    .select('*')
+    .order('created_at', { ascending: false })
+  if (error) throw error
+  return data ?? []
+}
+
+/** Writes go through the `submit-tip` Edge Function — same pattern as submitReport. */
+export async function submitCommunityTip(payload: CommunityTipSubmission): Promise<{ id: string }> {
+  const { data, error } = await supabase.functions.invoke('submit-tip', {
     body: payload,
   })
   if (error) throw error

@@ -50,13 +50,13 @@ export function PublicNotes({ notes }: PublicNotesProps) {
   const groups = groupByTheme(notes)
 
   return (
-    <div className="space-y-6">
+    <div className="columns-1 gap-4 sm:columns-2 lg:columns-3">
       {groups.map(({ theme, notes: themeNotes }) => (
-        <div key={theme}>
+        <div key={theme} className="mb-4 break-inside-avoid">
           <h3 className="text-sm font-medium text-ink-500">
             {theme} <span className="tabular-nums">({themeNotes.length})</span>
           </h3>
-          <div className="mt-3 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-3 space-y-3">
             {themeNotes.map((n) => (
               <figure
                 key={n.id}

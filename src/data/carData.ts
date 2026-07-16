@@ -53,6 +53,10 @@ export const MAJOR_ISSUES = [
   'Water leakage (major)',
   'Airbag / safety system warning',
   'Thermal / battery warning light',
+  'Tyre issues (bursts / punctures / wear)',
+  'Auto Hold malfunction',
+  'Gear selector / Park switch malfunction',
+  '12V / LV auxiliary battery malfunction',
 ] as const
 
 export const MINOR_ISSUES = [
@@ -77,6 +81,12 @@ export const MINOR_ISSUES = [
   'Audio cracking / distortion',
   'Audio balance / speaker focus issue',
   'Minor software glitches (non-critical)',
+  'Brake noise (squeal / vibration)',
+  'Rodent damage to wiring',
+  'Sunroof malfunction',
+  'Horn malfunction',
+  'Door handle / lock malfunction',
+  'HUD display quality issue',
 ] as const
 
 // Suggestions only (datalist) — not an enum, since owners may have fitted

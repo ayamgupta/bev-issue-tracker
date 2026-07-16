@@ -4,6 +4,7 @@ import { Home } from './pages/Home'
 import { Report } from './pages/Report'
 import { Dashboard } from './pages/Dashboard'
 import { Resources } from './pages/Resources'
+import { KnownIssues } from './pages/KnownIssues'
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
           <Route path="report" element={<Report />} />
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="resources" element={<Resources />} />
+          <Route path="known-issues" element={<KnownIssues />} />
         </Route>
       </Routes>
     </BrowserRouter>

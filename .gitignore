@@ -25,3 +25,6 @@ dist-ssr
 .supabase_token
 supabase/.temp/
 .claude/
+
+# Raw WhatsApp exports contain phone numbers/PII - never commit
+group_chat/

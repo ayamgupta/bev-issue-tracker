@@ -35,6 +35,12 @@ export function Home() {
               >
                 View analytics
               </Link>
+              <Link
+                to="/known-issues"
+                className="rounded-lg bg-white/10 px-5 py-3 text-sm font-semibold text-white ring-1 ring-white/30 backdrop-blur hover:bg-white/20"
+              >
+                Known issues &amp; fixes
+              </Link>
             </div>
           </div>
         </div>
