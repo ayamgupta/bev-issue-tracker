@@ -333,7 +333,7 @@ export const COMMUNITY_ISSUES: CommunityIssue[] = [
     models: [],
     frequency: 'common',
     description: 'Wipers streak/leave marks, drag with an audible noise, or (occasionally) make noise even in light rain due to a software calibration bug.',
-    fix: 'Stock blades wear or were poor quality for several owners, who switched to aftermarket Bosch or other rigid-frame blades for smoother, quieter operation. If the noise is a software issue rather than the blades, a wiper-calibration pass during an SC software reflash session has resolved it in at least one case. One thing to know before you shop: the factory sizes are odd, non-standard lengths, so matching blades exactly can be a hunt. Going an inch over or under stock is fine though, and that's given owners some easy aftermarket options — 26" driver / 21" passenger for the BE 6, and 24" driver / 16" passenger for the XEV 9e.',
+    fix: 'Stock blades wear or were poor quality for several owners, who switched to aftermarket Bosch or other rigid-frame blades for smoother, quieter operation. If the noise is a software issue rather than the blades, a wiper-calibration pass during an SC software reflash session has resolved it in at least one case. One thing to know before you shop: the factory sizes are odd, non-standard lengths, so matching blades exactly can be a hunt. Going an inch over or under stock is fine though, which has given owners some easy aftermarket options — 26" driver / 21" passenger for the BE 6, and 24" driver / 16" passenger for the XEV 9e.',
   },
   {
     issue: 'Braking system issue',
