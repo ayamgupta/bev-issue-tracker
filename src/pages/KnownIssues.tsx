@@ -310,7 +310,18 @@ export function KnownIssues() {
           ))}
         </div>
 
-        <section className="mt-16 rounded-2xl border border-ink-200 bg-white p-6 dark:border-ink-800 dark:bg-ink-900">
+        {!tipsLoading && tips.length > 0 && (
+          <section className="mt-16">
+            <h2 className="font-semibold text-ink-900 dark:text-ink-50">Recently submitted by owners</h2>
+            <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              {tips.map((tip) => (
+                <TipCard key={tip.id} tip={tip} />
+              ))}
+            </div>
+          </section>
+        )}
+
+        <section className={`rounded-2xl border border-ink-200 bg-white p-6 dark:border-ink-800 dark:bg-ink-900 ${!tipsLoading && tips.length > 0 ? 'mt-10' : 'mt-16'}`}>
           <h2 className="font-semibold text-ink-900 dark:text-ink-50">Know a fix that isn't listed?</h2>
           <p className="mt-1 max-w-2xl text-sm text-ink-500">
             Seen an issue here, or a different one, and found what fixed it? Share it below — it'll show up publicly
@@ -319,7 +330,7 @@ export function KnownIssues() {
 
           {tipStatus === 'success' ? (
             <div className="mt-4 rounded-lg bg-emerald-500/10 p-4 text-sm text-emerald-700 dark:text-emerald-300">
-              Thanks — your tip is live below.
+              Thanks — your tip is live above.
               <button
                 type="button"
                 onClick={() => setTipStatus('idle')}
@@ -381,17 +392,6 @@ export function KnownIssues() {
             </form>
           )}
         </section>
-
-        {!tipsLoading && tips.length > 0 && (
-          <section className="mt-10">
-            <h2 className="font-semibold text-ink-900 dark:text-ink-50">Recently submitted by owners</h2>
-            <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-              {tips.map((tip) => (
-                <TipCard key={tip.id} tip={tip} />
-              ))}
-            </div>
-          </section>
-        )}
       </div>
     </div>
   )
