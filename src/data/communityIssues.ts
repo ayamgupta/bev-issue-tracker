@@ -246,7 +246,7 @@ export const COMMUNITY_ISSUES: CommunityIssue[] = [
     frequency: 'common',
     description:
       'Uneven body-panel gaps, matte-instead-of-glossy piano-black cladding after a repaint, cladding popping loose in heat, and the occasional panel (bumper trim, wheel cap) detaching while driving.',
-    fix: 'Bodyshop realignment at the service centre resolves simple gap issues. For paint-quality mismatches, note that replacement cladding often arrives unpainted from Mahindra and is painted locally by the SC — escalate directly to Mahindra if the finish doesn\'t match, since SC paint-shop experience varies. Detached panels have been replaced under warranty when supported by dashcam footage.',
+    fix: 'Bodyshop realignment at the service centre resolves simple gap issues. For paint-quality mismatches, note that replacement cladding often arrives unpainted from Mahindra and is painted locally by the SC — escalate directly to Mahindra if the finish doesn\'t match, since SC paint-shop experience varies. Detached panels have been replaced under warranty when/if evidence is presented.',
   },
   {
     issue: 'Brake noise (squeal / vibration)',
