@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, type FormEvent } from 'react'
+import { useEffect, useLayoutEffect, useMemo, useRef, useState, type FormEvent } from 'react'
 import { Link } from 'react-router-dom'
 import { CAR_MODELS, type CarModel } from '../data/carData'
 import {
@@ -13,6 +13,39 @@ import { fetchCommunityTips, submitCommunityTip } from '../lib/api'
 import type { CommunityTipRow } from '../lib/types'
 import { Turnstile } from '../components/Turnstile'
 import { fuzzyScore } from '../lib/fuzzySearch'
+
+// Turns bare URLs in owner-written text (e.g. "youtu.be/xyz") into clickable
+// links — the source data is plain text, so this is done at render time
+// rather than storing markup in communityIssues.ts.
+const URL_PATTERN = /(https?:\/\/[^\s)]+|(?:www\.|youtu\.be\/)[^\s)]+)/g
+
+function linkify(text: string) {
+  const parts: (string | JSX.Element)[] = []
+  let lastIndex = 0
+  let match: RegExpExecArray | null
+  let key = 0
+
+  URL_PATTERN.lastIndex = 0
+  while ((match = URL_PATTERN.exec(text)) !== null) {
+    if (match.index > lastIndex) parts.push(text.slice(lastIndex, match.index))
+    const url = match[0]
+    const href = url.startsWith('http') ? url : `https://${url}`
+    parts.push(
+      <a
+        key={key++}
+        href={href}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="underline hover:text-emerald-700 dark:hover:text-emerald-300"
+      >
+        {url}
+      </a>,
+    )
+    lastIndex = match.index + url.length
+  }
+  if (lastIndex < text.length) parts.push(text.slice(lastIndex))
+  return parts
+}
 
 type ModelFilter = 'All' | CarModel
 type SeverityFilter = 'All' | 'major' | 'minor'
@@ -53,10 +86,42 @@ function StatTile({ label, value }: { label: string; value: string | number }) {
   )
 }
 
+function FixText({ text }: { text: string }) {
+  const ref = useRef<HTMLParagraphElement>(null)
+  const [expanded, setExpanded] = useState(false)
+  const [canExpand, setCanExpand] = useState(false)
+
+  useLayoutEffect(() => {
+    const el = ref.current
+    if (!el) return
+    setCanExpand(el.scrollHeight > el.clientHeight + 1)
+  }, [text])
+
+  return (
+    <div className="mt-1">
+      <p
+        ref={ref}
+        className={`whitespace-pre-line text-sm text-ink-600 dark:text-ink-300 ${expanded ? '' : 'line-clamp-3'}`}
+      >
+        {linkify(text)}
+      </p>
+      {canExpand && (
+        <button
+          type="button"
+          onClick={() => setExpanded((v) => !v)}
+          className="mt-1 text-xs font-semibold text-emerald-600 hover:underline dark:text-emerald-400"
+        >
+          {expanded ? 'Show less' : 'Show more'}
+        </button>
+      )}
+    </div>
+  )
+}
+
 function IssueCard({ item, isTopIssue }: { item: CommunityIssue; isTopIssue: boolean }) {
   return (
     <div
-      className={`relative overflow-hidden rounded-2xl border bg-white p-5 shadow-sm transition-shadow hover:shadow-md dark:bg-ink-900 ${
+      className={`relative flex min-h-[380px] flex-col overflow-hidden rounded-2xl border bg-white p-5 shadow-sm transition-shadow hover:shadow-md dark:bg-ink-900 ${
         item.severity === 'major'
           ? 'border-red-200 dark:border-red-900/50'
           : 'border-ink-200 dark:border-ink-800'
@@ -108,7 +173,7 @@ function IssueCard({ item, isTopIssue }: { item: CommunityIssue; isTopIssue: boo
           <p className="text-xs font-semibold uppercase tracking-wide text-emerald-600 dark:text-emerald-400">
             ✓ Fix / workaround from owners
           </p>
-          <p className="mt-1 text-sm text-ink-600 dark:text-ink-300">{item.fix}</p>
+          <FixText text={item.fix} />
         </div>
       ) : (
         <p className="mt-3 text-xs italic text-ink-500">No reliable fix reported yet — ask your service centre.</p>
@@ -131,7 +196,7 @@ function TipCard({ tip }: { tip: CommunityTipRow }) {
         </span>
       </div>
       <p className="mt-2 text-sm font-medium text-ink-900 dark:text-ink-50">{tip.issue}</p>
-      <p className="mt-1 text-sm text-ink-600 dark:text-ink-300">{tip.fix}</p>
+      <p className="mt-1 whitespace-pre-line text-sm text-ink-600 dark:text-ink-300">{linkify(tip.fix)}</p>
     </div>
   )
 }
