@@ -27,6 +27,9 @@ jobs:
 
       - run: npm ci
 
+      - name: Install Chromium for prerendering
+        run: npx playwright install --with-deps chromium
+
       - name: Build
         env:
           VITE_BASE_PATH: /${{ github.event.repository.name }}/

@@ -14,6 +14,7 @@ import type { CommunityTipRow } from '../lib/types'
 import { Turnstile } from '../components/Turnstile'
 import { fuzzyScore } from '../lib/fuzzySearch'
 import { usePageMeta } from '../lib/usePageMeta'
+import { useStructuredData } from '../lib/useStructuredData'
 
 // Turns bare URLs in owner-written text (e.g. "youtu.be/xyz") into clickable
 // links — the source data is plain text, so this is done at render time
@@ -209,6 +210,23 @@ export function KnownIssues() {
       'Common BE 6 issues and problems, XEV 9e issues and problems, and XEV 9S issues reported by real owners — suspension, charging, software, ADAS, tyres and more — with community-sourced fixes and workarounds for these Mahindra electric SUVs.',
     path: '/known-issues',
   })
+
+  const faqStructuredData = useMemo(
+    () => ({
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: COMMUNITY_ISSUES.map((item) => ({
+        '@type': 'Question',
+        name: item.issue,
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: item.fix ?? item.description,
+        },
+      })),
+    }),
+    [],
+  )
+  useStructuredData(faqStructuredData)
 
   const [modelFilter, setModelFilter] = useState<ModelFilter>('All')
   const [severityFilter, setSeverityFilter] = useState<SeverityFilter>('All')
