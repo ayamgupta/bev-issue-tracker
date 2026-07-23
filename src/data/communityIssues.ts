@@ -35,6 +35,7 @@ export const CATEGORY_ICON: Record<string, string> = {
   'Comfort & convenience': '🛋️',
   'Build quality': '🔍',
   Software: '💾',
+  'Service & maintenance': '🛠️',
 }
 
 export interface CommunityIssue {
@@ -353,6 +354,16 @@ export const COMMUNITY_ISSUES: CommunityIssue[] = [
     frequency: 'multiple-reports',
     description: 'Parking sensors beep with no obstacle present, tyre-pressure/temperature sensors briefly show implausible readings, or a mirror camera feed doesn\'t display when indicating.',
     fix: 'A restart clears most of these false readings. Persistently wrong TPMS readings can be affected by RF interference or very low speed — a manual TPMS-learning routine at the service centre can help if it doesn\'t clear on its own.',
+  },
+  {
+    issue: 'Service reminder popping up randomly',
+    severity: 'minor',
+    category: 'Service & maintenance',
+    models: ['BE 6', 'XEV 9e', 'XEV 9S'],
+    frequency: 'widespread',
+    description:
+      'A "service due"/service-reminder alert pops up in the cluster or Me4U app well before the actual service is due — often within 200-2,500km of a completed service, and sometimes on nearly every drive-cycle start. Widely reported and, per owners who\'ve asked their SC directly, treated by Mahindra as a known false-trigger bug rather than a real overdue-service condition. A minority of owners have had it recur every time no matter what they try.',
+    fix: 'Owners self-reset it in-car using the "BE6/XEV9 Service Reminder Reset" video on the Mahindra DIY YouTube channel (youtu.be/zouTwpFCDdk). Steps: (1) turn the car on in ACC mode without pressing any pedal, (2) check the CID/DID to confirm the alert is present, (3) press and hold the OK button (rightmost button on the steering wheel), (4) while still holding OK, turn the ignition off and wait for the screen to go fully black, (5) still holding OK, turn the ignition back on and keep holding for about 10 seconds until the car finishes booting, (6) release OK and check the CID/alert history to confirm the reminder is gone. If it doesn\'t stick, ask the SC to do it for you (some do it as a quick in-and-out visit, and some proactively switch the reminder off before handing the car back after a scheduled service) — but be aware several owners report it reappearing within a few hundred km regardless, or the steps simply stopping working for them. Also worth knowing: when the feature is working correctly, the alert is meant to start appearing about 400km before the scheduled service is actually due — if you\'re seeing it much earlier than that, it\'s the bug, not a real early-service signal.',
   },
 ]
 
