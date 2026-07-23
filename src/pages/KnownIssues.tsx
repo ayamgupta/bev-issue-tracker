@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useMemo, useRef, useState, type FormEvent } from 'react'
+import { useEffect, useLayoutEffect, useMemo, useRef, useState, type FormEvent, type ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import { CAR_MODELS, type CarModel } from '../data/carData'
 import {
@@ -20,7 +20,7 @@ import { fuzzyScore } from '../lib/fuzzySearch'
 const URL_PATTERN = /(https?:\/\/[^\s)]+|(?:www\.|youtu\.be\/)[^\s)]+)/g
 
 function linkify(text: string) {
-  const parts: (string | JSX.Element)[] = []
+  const parts: ReactNode[] = []
   let lastIndex = 0
   let match: RegExpExecArray | null
   let key = 0
