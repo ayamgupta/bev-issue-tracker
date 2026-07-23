@@ -3,6 +3,7 @@ import { BATTERY_PACKS, VARIANTS_BY_MODEL } from '../data/carData'
 import { ReportFormFields, type ReportFormValues } from '../components/ReportFormFields'
 import { Turnstile } from '../components/Turnstile'
 import { submitReport } from '../lib/api'
+import { usePageMeta } from '../lib/usePageMeta'
 
 const currentYear = new Date().getFullYear()
 
@@ -28,6 +29,13 @@ const initialValues: ReportFormValues = {
 }
 
 export function Report() {
+  usePageMeta({
+    title: 'Report Your Experience',
+    description:
+      'Anonymously report issues, ratings, and your ownership experience with the Mahindra BE 6, XEV 9e or XEV 9S.',
+    path: '/report',
+  })
+
   const [values, setValues] = useState<ReportFormValues>(initialValues)
 
   const [regNumber, setRegNumber] = useState('')

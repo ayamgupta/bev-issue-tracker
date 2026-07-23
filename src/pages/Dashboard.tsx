@@ -20,6 +20,7 @@ import type {
 import { IssueBarChart, type RankedIssueRow } from '../components/IssueBarChart'
 import { PublicNotes } from '../components/PublicNotes'
 import { SatisfactionCard } from '../components/SatisfactionCard'
+import { usePageMeta } from '../lib/usePageMeta'
 
 type ModelFilter = 'All' | CarModel
 type VariantFilter = 'All' | string
@@ -28,6 +29,13 @@ type SeverityFilter = 'All' | 'major' | 'minor'
 const ALL_VARIANTS = Array.from(new Set(Object.values(VARIANTS_BY_MODEL).flat()))
 
 export function Dashboard() {
+  usePageMeta({
+    title: 'Analytics Dashboard',
+    description:
+      'Self-reported issue frequency, satisfaction ratings, and reliability analytics from Mahindra BE 6, XEV 9e and XEV 9S owners.',
+    path: '/dashboard',
+  })
+
   const [summary, setSummary] = useState<AnalyticsSummary | null>(null)
   const [issues, setIssues] = useState<IssueFrequencyRow[]>([])
   const [satisfaction, setSatisfaction] = useState<SatisfactionRow[]>([])

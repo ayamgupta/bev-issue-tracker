@@ -1,4 +1,5 @@
 import { CAR_MODELS, type CarModel } from '../data/carData'
+import { usePageMeta } from '../lib/usePageMeta'
 
 type ResourceDoc = {
   title: string
@@ -131,6 +132,13 @@ function DocCard({ doc }: { doc: ResourceDoc }) {
 }
 
 export function Resources() {
+  usePageMeta({
+    title: 'Brochures & Resources',
+    description:
+      'Official brochures and documentation for the Mahindra BE 6, XEV 9e and XEV 9S, mirrored in one place.',
+    path: '/resources',
+  })
+
   return (
     <div className="mx-auto max-w-6xl px-4 sm:px-6 py-12">
       <h1 className="text-3xl font-semibold text-ink-900 dark:text-ink-50">Resources</h1>

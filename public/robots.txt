@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://genegladiator.github.io/bev-issue-tracker/sitemap.xml

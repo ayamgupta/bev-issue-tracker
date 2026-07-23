@@ -13,6 +13,7 @@ import { fetchCommunityTips, submitCommunityTip } from '../lib/api'
 import type { CommunityTipRow } from '../lib/types'
 import { Turnstile } from '../components/Turnstile'
 import { fuzzyScore } from '../lib/fuzzySearch'
+import { usePageMeta } from '../lib/usePageMeta'
 
 // Turns bare URLs in owner-written text (e.g. "youtu.be/xyz") into clickable
 // links — the source data is plain text, so this is done at render time
@@ -202,6 +203,13 @@ function TipCard({ tip }: { tip: CommunityTipRow }) {
 }
 
 export function KnownIssues() {
+  usePageMeta({
+    title: 'Known Issues & Problems — Mahindra BE 6, XEV 9e, XEV 9S',
+    description:
+      'Common BE 6 issues and problems, XEV 9e issues and problems, and XEV 9S issues reported by real owners — suspension, charging, software, ADAS, tyres and more — with community-sourced fixes and workarounds for these Mahindra electric SUVs.',
+    path: '/known-issues',
+  })
+
   const [modelFilter, setModelFilter] = useState<ModelFilter>('All')
   const [severityFilter, setSeverityFilter] = useState<SeverityFilter>('All')
   const [categoryFilter, setCategoryFilter] = useState<CategoryFilter>('All')

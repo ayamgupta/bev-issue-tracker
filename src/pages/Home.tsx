@@ -1,8 +1,16 @@
 import { Link } from 'react-router-dom'
 import { CAR_MODEL_INFO, CAR_MODELS } from '../data/carData'
 import { CarImage } from '../components/CarImage'
+import { usePageMeta } from '../lib/usePageMeta'
 
 export function Home() {
+  usePageMeta({
+    title: 'Mahindra BE 6, XEV 9e & XEV 9S Issues, Problems & Owner Reviews',
+    description:
+      'An independent, owner-driven issue tracker for Mahindra BE 6 issues, XEV 9e issues, and XEV 9S problems — real owner reports, ratings, and analytics. Anonymous by default, no affiliation with Mahindra.',
+    path: '/',
+  })
+
   return (
     <div>
       <section className="relative isolate overflow-hidden">
