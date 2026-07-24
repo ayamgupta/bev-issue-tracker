@@ -9,7 +9,7 @@ import { preview } from 'vite'
 import fs from 'node:fs'
 import path from 'node:path'
 
-const ROUTES = ['/', '/report', '/dashboard', '/resources', '/known-issues']
+const ROUTES = ['/', '/report', '/dashboard', '/resources', '/care-guide', '/known-issues']
 
 // A marker only present once Layout.tsx has actually rendered — confirms
 // React mounted, as opposed to snapshotting the pre-hydration empty shell

@@ -42,6 +42,9 @@ export function Layout() {
             <NavLink to="/resources" className={navLinkClass}>
               Resources
             </NavLink>
+            <NavLink to="/care-guide" className={navLinkClass}>
+              Care Guide
+            </NavLink>
             <NavLink to="/known-issues" className={navLinkClass}>
               Known Issues
             </NavLink>
@@ -82,6 +85,9 @@ export function Layout() {
               </NavLink>
               <NavLink to="/resources" className={mobileNavLinkClass}>
                 Resources
+              </NavLink>
+              <NavLink to="/care-guide" className={mobileNavLinkClass}>
+                Care Guide
               </NavLink>
               <NavLink to="/known-issues" className={mobileNavLinkClass}>
                 Known Issues
