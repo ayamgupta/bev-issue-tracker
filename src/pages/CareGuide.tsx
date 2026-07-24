@@ -118,51 +118,68 @@ const CLASSIC_BATTERY_TIPS: ClassicTip[] = [
 
 type Scenario = {
   emoji: string
-  scenario: string
+  quote: string
+  source: string
+  take: string
   fix: string
 }
 
 const SCENARIOS: Scenario[] = [
   {
     emoji: '🐢',
-    scenario:
-      '"The light just turned green and I NEED to be first off the line." Every jackrabbit start is a tiny withdrawal from the range bank.',
+    quote: '"Rubbin\' is racin\'."',
+    source: 'Days of Thunder',
+    take:
+      "Great philosophy for a stock car, terrible one for your range. Every jackrabbit start is a tiny withdrawal from the battery.",
     fix: 'Default or Range drive mode, Regen Level 1 or 2, and flip on "Power Saving Mode" once you dip under 20% SOC.',
   },
   {
     emoji: '🏎️',
-    scenario:
-      'You\'re doing 130 km/h "because the car can" — and wondering why the range estimate is evaporating faster than the scenery.',
+    quote: '"I live my life a quarter mile at a time."',
+    source: 'Dominic Toretto, The Fast and the Furious',
+    take: 'Beautiful on the drag strip. Brutal on a road-trip ETA — sustained high speed is the single fastest way to torch your range.',
     fix: 'City driving (up to 45 km/h) is rated 450–500 km. Highway cruising (up to 110 km/h) drops to 350–400 km. Sustained 120+ km/h chunks? Sub-300 km. Stay under ~100 km/h and let adaptive cruise do the steady-speed work for you.',
   },
   {
     emoji: '🦶',
-    scenario: 'You tap the pedal like you\'re used to a normal SUV, and the BE 6 responds like it read your mind — a little too enthusiastically.',
+    quote: '"I am speed."',
+    source: 'Lightning McQueen, Cars',
+    take: "The BE 6 might actually agree with him — it's quicker off the line than it feels. Doesn't mean you should drive it like you're racing Chick Hicks.",
     fix: 'Ease into the accelerator with a light foot instead of stabbing it. Smoother for the range, smoother for your passengers.',
   },
   {
     emoji: '🥶',
-    scenario: 'You set the AC to 16°C and "Max Cool" the second you get in, then wonder why the range dropped like a stone.',
+    quote: '"Pop quiz, hotshot."',
+    source: 'Jack Traven, Speed',
+    take: "What's the ideal AC setting for range? If you answered '16°C, Max Cool, the second you get in,' you'd have failed Jack's quiz too.",
     fix: '23–24°C, Auto mode 1 or 2 is the sweet spot. Use "Economy" AC when idle, Driver-Only mode when you\'re flying solo, and keep any Dual AC zone gap under 3°C.',
   },
   {
     emoji: '🌡️',
-    scenario: 'Peak summer, bumper-to-bumper, AC on full blast — and the range meter is dropping faster than the km driven.',
+    quote: '"What a lovely day!"',
+    source: 'Nux, Mad Max: Fury Road',
+    take: "Said while driving straight into a sandstorm — which is roughly how your range feels above 35°C or below 15°C.",
     fix: 'Above 35°C, expect up to -25% range in the city and -15% on the highway. Below 15°C, up to -15%. Nothing\'s broken — the battery just doesn\'t love extremes.',
   },
   {
     emoji: '⛰️',
-    scenario: 'That scenic hill-station drive looked great on the map. Less great on the range estimate.',
+    quote: '"There\'s a point, 7,000 rpm, where everything fades. The machine becomes weightless... it just disappears."',
+    source: 'Ken Miles, Ford v Ferrari',
+    take: "Poetic at Le Mans. A lot less poetic when that same disappearing feeling is your range gauge, climbing a hill station.",
     fix: 'Sustained uphill driving can cost 20–25% of your range depending on grade and duration — plan charging stops accordingly.',
   },
   {
     emoji: '🎒',
-    scenario: 'Five people, a week\'s luggage, and a roof box "just in case." The range estimate did not get the memo that this was a light trip.',
+    quote: '"I don\'t have friends, I got family."',
+    source: 'Dominic Toretto, Fast Five',
+    take: "Beautiful sentiment. Less beautiful when the whole family plus a roof box climbs in for the trip and the range estimate quietly gives up.",
     fix: 'A fully loaded car (driver + 4) can lose 10–15% of its range versus travelling light. Ditch the roof rack when it\'s not earning its keep.',
   },
   {
     emoji: '🅿️',
-    scenario: 'Quick errand, engine — sorry, AC — left running "for just five minutes" while you pop into three different shops.',
+    quote: '"Ka-chow!"',
+    source: 'Lightning McQueen, Cars',
+    take: "Great at the finish line. Not so great when it's just the AC idling through three quick errands while you're double-parked.",
     fix: 'Short trips with long idles and the AC running quietly drain more than the odometer suggests. If cooling feels weaker than it used to, get the AC filter checked (every 10,000 km).',
   },
 ]
@@ -188,24 +205,45 @@ type ListItem = {
 
 const BATTERY_DOS: ListItem[] = [
   { emoji: '💯', text: 'Charge to 100% right when you need it — not as a permanent resting state.' },
-  { emoji: '🧳', text: 'Charge above 50% before leaving the vehicle for a while; top back up to 100% when you return, on a Normal (AC) charger.' },
+  {
+    emoji: '🧳',
+    text: 'Charge above 50% before leaving the vehicle for a while; top back up to 100% when you return, on a Normal (AC) charger.',
+  },
   { emoji: '🔌', text: "Disconnect the 12V battery's negative terminal if the car will sit for 30+ days." },
-  { emoji: '🏖️', text: 'Give the AC a ~5-minute warm-up (fresh air, high blower) before parking it for 2+ weeks.' },
+  {
+    emoji: '🏖️',
+    text: 'Give the AC a ~5-minute warm-up (fresh air, high blower) before parking it for 2+ weeks.',
+  },
   { emoji: '⚡', text: 'Follow every 3rd fast-charge with one full 100% Normal (AC) charge.' },
-  { emoji: '🏠', text: 'Prefer home/Normal charging to 100% over leaning on fast chargers, especially if you drive less.' },
+  {
+    emoji: '🏠',
+    text: 'Prefer home/Normal charging to 100% over leaning on fast chargers, especially if you drive less.',
+  },
   { emoji: '🐌', text: 'Barely driving it? Plug in and charge fully at least once a week anyway.' },
-  { emoji: '🧯', text: 'Charge in a ventilated spot with dry hands and a dry port, and keep the EVSE cable stored safely.' },
+  {
+    emoji: '🧯',
+    text: 'Charge in a ventilated spot with dry hands and a dry port, and keep the EVSE cable stored safely.',
+  },
 ]
 
 const BATTERY_DONTS: ListItem[] = [
   { emoji: '🚫', text: 'Run it down to 0%, or make a habit of dipping under 5%.' },
   { emoji: '🛌', text: 'Leave it parked at 100% SOC for days on end.' },
-  { emoji: '🔋', text: 'Use it as a stationary power bank for anything else — it\'ll void the battery warranty.' },
-  { emoji: '☀️', text: 'Park it in blazing sun, high-heat-reflection spots, or freezing cold for extended stretches.' },
+  {
+    emoji: '🔋',
+    text: "Use it as a stationary power bank for anything else — it'll void the battery warranty.",
+  },
+  {
+    emoji: '☀️',
+    text: 'Park it in blazing sun, high-heat-reflection spots, or freezing cold for extended stretches.',
+  },
   { emoji: '🐎', text: 'Lean on fast charging as your everyday habit — it wears the pack faster.' },
   { emoji: '🌧️', text: 'Charge with wet hands, in exposed rain, or in direct sunlight.' },
   { emoji: '🔥', text: 'Let it anywhere near an open flame.' },
-  { emoji: '🤷', text: "Ignore a fully discharged battery — that tow/repair bill isn't covered by warranty." },
+  {
+    emoji: '🤷',
+    text: "Ignore a fully discharged battery — that tow/repair bill isn't covered by warranty.",
+  },
 ]
 
 // ---------- Shared ----------
@@ -251,35 +289,51 @@ export function CareGuide() {
   }, [mode])
 
   return (
-    <div className="mx-auto max-w-6xl px-4 sm:px-6 py-12">
-      <div className="flex flex-wrap items-center gap-4">
-        <h1 className="text-3xl font-semibold text-ink-900 dark:text-ink-50">Range &amp; Battery Care Guide</h1>
-        <ModeToggle mode={mode} onChange={setMode} />
-      </div>
-      <p className="mt-3 max-w-2xl text-ink-500">
-        {mode === 'fun'
-          ? 'Every EV owner has a mental battle with the range meter. Here’s how to win it — plus how to keep your Blade battery happy for the next decade, not just the next road trip.'
-          : 'Community-curated best practices for getting the most driving range out of your car and taking care of its LFP (LiFePO₂) “Blade” battery pack.'}{' '}
-        Sourced from the official owner&rsquo;s manual&rsquo;s &ldquo;Best Practices for Maximizing EV
-        Range,&rdquo; charging and vehicle-storage sections.
-      </p>
+    <div>
+      <div className="border-b border-ink-200/70 bg-gradient-to-br from-brand-500/10 via-transparent to-transparent dark:border-ink-800/70">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 py-14">
+          <div className="flex flex-wrap items-center gap-4">
+            <h1 className="text-3xl font-semibold text-ink-900 dark:text-ink-50 sm:text-4xl">
+              Range &amp; Battery Care Guide
+            </h1>
+            <ModeToggle mode={mode} onChange={setMode} />
+          </div>
+          <p className="mt-3 text-ink-500">
+            {mode === 'fun'
+              ? 'Hollywood has some iconic lines about driving fast. Your range meter has some opinions about that. Here’s how to keep both the fun and the range — plus how to keep your Blade battery happy for the next decade, not just the next road trip.'
+              : 'Community-curated best practices for getting the most driving range out of your car and taking care of its LFP (LiFePO₂) “Blade” battery pack.'}{' '}
+            Sourced from the official owner&rsquo;s manual&rsquo;s &ldquo;Best Practices for Maximizing EV
+            Range,&rdquo; charging and vehicle-storage sections.
+          </p>
 
-      <div className="mt-6 rounded-2xl border border-amber-300/60 bg-amber-50 p-5 text-sm text-amber-900 dark:border-amber-500/30 dark:bg-amber-500/10 dark:text-amber-200">
-        <p className="font-semibold">Disclaimer</p>
-        <p className="mt-1.5">
-          This page is an independent, owner-curated summary and is <strong>not official Mahindra guidance</strong>.
-          The figures and recommendations below are paraphrased from the BE 6 owner&rsquo;s manual (see{' '}
-          <a href={`${import.meta.env.BASE_URL}resources`} className="font-medium underline underline-offset-2">
-            Resources
-          </a>{' '}
-          for the original PDF) &mdash; specifically its range best-practices table and charging/storage sections.
-          Figures like range and percentage impacts are indicative, subject to driving pattern and environmental
-          conditions, and may vary by variant or change with future manual revisions. Always defer to your printed
-          manual, the in-car display, or an Authorized Mahindra Service Center for anything safety-critical or
-          warranty-related. Not affiliated with Mahindra &amp; Mahindra Ltd or BYD.
-        </p>
+          <div className="mt-6 rounded-2xl border border-amber-300/60 bg-amber-50 p-5 text-sm text-amber-900 dark:border-amber-500/30 dark:bg-amber-500/10 dark:text-amber-200">
+            <p className="font-semibold">Disclaimer</p>
+            <p className="mt-1.5">
+              This page is an independent, owner-curated summary and is{' '}
+              <strong>not official Mahindra guidance</strong>. The figures and recommendations below are paraphrased
+              from the BE 6 owner&rsquo;s manual (see{' '}
+              <a href={`${import.meta.env.BASE_URL}resources`} className="font-medium underline underline-offset-2">
+                Resources
+              </a>{' '}
+              for the original PDF) &mdash; specifically its range best-practices table and charging/storage
+              sections. Figures like range and percentage impacts are indicative, subject to driving pattern and
+              environmental conditions, and may vary by variant or change with future manual revisions. Always defer
+              to your printed manual, the in-car display, or an Authorized Mahindra Service Center for anything
+              safety-critical or warranty-related. Not affiliated with Mahindra &amp; Mahindra Ltd or BYD.
+              {mode === 'fun' && (
+                <>
+                  {' '}
+                  Movie quotes are the property of their respective studios and are used here purely for fun,
+                  commentary-style contrast &mdash; no affiliation or endorsement by any film, studio, or rights
+                  holder is implied.
+                </>
+              )}
+            </p>
+          </div>
+        </div>
       </div>
 
+      <div className="mx-auto max-w-6xl px-4 sm:px-6 py-10">
       {mode === 'classic' ? (
         <>
           <section className="mt-12">
@@ -338,7 +392,7 @@ export function CareGuide() {
             <h2 className="text-xl font-semibold text-ink-900 dark:text-ink-50">
               Battery care (BYD Blade LFP pack)
             </h2>
-            <p className="mt-2 max-w-2xl text-sm text-ink-500">
+            <p className="mt-2 text-sm text-ink-500">
               These cars use BYD&rsquo;s Blade cells, which are LFP (lithium iron phosphate) chemistry &mdash;
               generally more thermally stable and tolerant of high states of charge than NMC/NCA chemistries used
               in many other EVs. The manual&rsquo;s own care guidance below still applies regardless of chemistry.
@@ -360,20 +414,28 @@ export function CareGuide() {
         <>
           <section className="mt-12">
             <h2 className="text-xl font-semibold text-ink-900 dark:text-ink-50">
-              🎮 How to actually get the range you were promised
+              🎬 Movie Quotes vs. Real Range
             </h2>
+            <p className="mt-2 text-sm text-ink-500">
+              Hollywood&rsquo;s finest car-movie lines, reality-checked against your actual range meter.
+            </p>
             <div className="mt-4 grid gap-4 sm:grid-cols-2">
               {SCENARIOS.map((s) => (
                 <div
-                  key={s.scenario}
+                  key={s.quote}
                   className="rounded-2xl border border-ink-200 bg-white p-5 shadow-sm dark:border-ink-800 dark:bg-ink-900"
                 >
-                  <p className="flex gap-3 text-ink-600 italic dark:text-ink-300">
-                    <span aria-hidden="true" className="text-xl not-italic leading-none">
+                  <p className="flex gap-3">
+                    <span aria-hidden="true" className="text-xl leading-none">
                       {s.emoji}
                     </span>
-                    <span>{s.scenario}</span>
+                    <span>
+                      <span className="text-lg font-semibold italic text-ink-900 dark:text-ink-50">{s.quote}</span>
+                      <br />
+                      <cite className="text-xs not-italic text-ink-400 dark:text-ink-500">&mdash; {s.source}</cite>
+                    </span>
                   </p>
+                  <p className="mt-3 text-sm text-ink-600 dark:text-ink-300">{s.take}</p>
                   <p className="mt-3 border-t border-ink-100 pt-3 text-sm text-ink-700 dark:border-ink-800 dark:text-ink-200">
                     <span className="font-semibold text-brand-600 dark:text-brand-400">The fix: </span>
                     {s.fix}
@@ -385,7 +447,7 @@ export function CareGuide() {
 
           <section className="mt-12">
             <h2 className="text-xl font-semibold text-ink-900 dark:text-ink-50">📊 The need-for-speed penalty</h2>
-            <p className="mt-2 max-w-2xl text-sm text-ink-500">
+            <p className="mt-2 text-sm text-ink-500">
               Straight from the manual&rsquo;s own range table (driver + 1 passenger, Default/Range mode, Regen
               Level 1/2, AC at 23&ndash;24&deg;C Auto). The faster and further you push it, the shorter the bar
               gets.
@@ -446,7 +508,7 @@ export function CareGuide() {
             <h2 className="text-xl font-semibold text-ink-900 dark:text-ink-50">
               🔋 Battery Care: the Do&rsquo;s and Don&rsquo;ts
             </h2>
-            <p className="mt-2 max-w-2xl text-sm text-ink-500">
+            <p className="mt-2 text-sm text-ink-500">
               BYD&rsquo;s Blade cells are LFP (lithium iron phosphate) chemistry &mdash; tougher and more tolerant
               of high states of charge than the NMC/NCA packs in many other EVs. Tough cookie, sure, but it still
               appreciates good habits.
@@ -478,6 +540,7 @@ export function CareGuide() {
           </section>
         </>
       )}
+      </div>
     </div>
   )
 }

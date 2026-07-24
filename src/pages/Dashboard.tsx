@@ -164,13 +164,18 @@ export function Dashboard() {
   }, [tyreBrands])
 
   return (
-    <div className="mx-auto max-w-6xl px-4 sm:px-6 py-12">
-      <h1 className="text-2xl font-semibold text-ink-900 dark:text-ink-50">Owner-reported analytics</h1>
-      <p className="mt-2 text-sm text-ink-500">
-        Real owners, real gripes, zero brochure spin. Aggregated from community submissions — unverified reports are
-        included, but flagged/removed entries are politely shown the door.
-      </p>
+    <div>
+      <div className="border-b border-ink-200/70 bg-gradient-to-br from-brand-500/10 via-transparent to-transparent dark:border-ink-800/70">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 py-14">
+          <h1 className="text-3xl font-semibold text-ink-900 dark:text-ink-50 sm:text-4xl">Owner-reported analytics</h1>
+          <p className="mt-3 text-ink-500">
+            Real owners, real gripes, zero brochure spin. Aggregated from community submissions — unverified reports
+            are included, but flagged/removed entries are politely shown the door.
+          </p>
+        </div>
+      </div>
 
+      <div className="mx-auto max-w-6xl px-4 sm:px-6 py-10">
       {error && <p className="mt-6 text-sm text-rose-500">{error}</p>}
       {loading && <p className="mt-6 text-sm text-ink-500">Loading…</p>}
 
@@ -324,6 +329,7 @@ export function Dashboard() {
           </section>
         </>
       )}
+      </div>
     </div>
   )
 }

@@ -54,23 +54,25 @@ export function Home() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-6xl px-4 sm:px-6 py-14">
-        <h2 className="text-xl font-semibold text-ink-900 dark:text-ink-50">The models we track</h2>
-        <div className="mt-6 grid gap-6 sm:grid-cols-3">
-          {CAR_MODELS.map((model) => (
-            <div
-              key={model}
-              className="overflow-hidden rounded-2xl border border-ink-200 bg-white shadow-sm dark:border-ink-800 dark:bg-ink-900"
-            >
-              <CarImage src={CAR_MODEL_INFO[model].image} alt={model} className="h-40 w-full object-cover" />
-              <div className="p-4">
-                <h3 className="font-semibold text-ink-900 dark:text-ink-50">{model}</h3>
-                <p className="mt-1 text-sm text-ink-500">{CAR_MODEL_INFO[model].tagline}</p>
+      <div className="border-b border-ink-200/70 bg-gradient-to-br from-brand-500/10 via-transparent to-transparent dark:border-ink-800/70">
+        <section className="mx-auto max-w-6xl px-4 sm:px-6 py-14">
+          <h2 className="text-xl font-semibold text-ink-900 dark:text-ink-50">The models we track</h2>
+          <div className="mt-6 grid gap-6 sm:grid-cols-3">
+            {CAR_MODELS.map((model) => (
+              <div
+                key={model}
+                className="overflow-hidden rounded-2xl border border-ink-200 bg-white shadow-sm dark:border-ink-800 dark:bg-ink-900"
+              >
+                <CarImage src={CAR_MODEL_INFO[model].image} alt={model} className="h-40 w-full object-cover" />
+                <div className="p-4">
+                  <h3 className="font-semibold text-ink-900 dark:text-ink-50">{model}</h3>
+                  <p className="mt-1 text-sm text-ink-500">{CAR_MODEL_INFO[model].tagline}</p>
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
-      </section>
+            ))}
+          </div>
+        </section>
+      </div>
 
       <section className="mx-auto max-w-6xl px-4 sm:px-6 pb-16">
         <div className="grid gap-6 rounded-2xl border border-ink-200 bg-white p-8 dark:border-ink-800 dark:bg-ink-900 sm:grid-cols-3">

@@ -140,57 +140,63 @@ export function Resources() {
   })
 
   return (
-    <div className="mx-auto max-w-6xl px-4 sm:px-6 py-12">
-      <h1 className="text-3xl font-semibold text-ink-900 dark:text-ink-50">Resources</h1>
-      <p className="mt-3 max-w-2xl text-ink-500">
-        Official brochures and documentation for the Mahindra BE 6, XEV 9e and XEV 9S, collected in one place. Mirrored
-        here for convenience — not affiliated with Mahindra &amp; Mahindra Ltd.
-      </p>
-
-      <section className="mt-10">
-        <h2 className="text-xl font-semibold text-ink-900 dark:text-ink-50">Owner's manuals</h2>
-        <p className="mt-2 max-w-2xl text-sm text-ink-500">
-          Mahindra only publishes these as a view-only page, with no official download option. These PDF copies come
-          from{' '}
-          <a
-            href="https://github.com/chiragkrishna/Mahindra-eSUVs-Manual-Downloader"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="font-medium text-brand-500 hover:underline"
-          >
-            chiragkrishna/Mahindra-eSUVs-Manual-Downloader
-          </a>{' '}
-          — thanks to that project for making them available. Not affiliated with Mahindra.
-        </p>
-        <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {OWNERS_MANUALS.map((doc) => (
-            <DocCard key={doc.file} doc={doc} />
-          ))}
+    <div>
+      <div className="border-b border-ink-200/70 bg-gradient-to-br from-brand-500/10 via-transparent to-transparent dark:border-ink-800/70">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 py-14">
+          <h1 className="text-3xl font-semibold text-ink-900 dark:text-ink-50 sm:text-4xl">Resources</h1>
+          <p className="mt-3 text-ink-500">
+            Official brochures and documentation for the Mahindra BE 6, XEV 9e and XEV 9S, collected in one place.
+            Mirrored here for convenience — not affiliated with Mahindra &amp; Mahindra Ltd.
+          </p>
         </div>
-      </section>
+      </div>
 
-      <section className="mt-12">
-        <h2 className="text-xl font-semibold text-ink-900 dark:text-ink-50">Warranty &amp; service guides</h2>
-        <p className="mt-2 max-w-2xl text-sm text-ink-500">
-          Official service schedules and warranty terms. Mahindra restricts full dealer-level workshop/repair manuals
-          (wiring diagrams, teardown procedures) to its dealer network — we haven't found a publicly downloadable
-          copy of those for any of the {CAR_MODELS.join(', ')}.
-        </p>
-        <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {SERVICE_GUIDES.map((doc) => (
-            <DocCard key={doc.file} doc={doc} />
-          ))}
-        </div>
-      </section>
+      <div className="mx-auto max-w-6xl px-4 sm:px-6 py-10">
+        <section>
+          <h2 className="text-xl font-semibold text-ink-900 dark:text-ink-50">Owner's manuals</h2>
+          <p className="mt-2 text-sm text-ink-500">
+            Mahindra only publishes these as a view-only page, with no official download option. These PDF copies
+            come from{' '}
+            <a
+              href="https://github.com/chiragkrishna/Mahindra-eSUVs-Manual-Downloader"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-medium text-brand-500 hover:underline"
+            >
+              chiragkrishna/Mahindra-eSUVs-Manual-Downloader
+            </a>{' '}
+            — thanks to that project for making them available. Not affiliated with Mahindra.
+          </p>
+          <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {OWNERS_MANUALS.map((doc) => (
+              <DocCard key={doc.file} doc={doc} />
+            ))}
+          </div>
+        </section>
 
-      <section className="mt-12">
-        <h2 className="text-xl font-semibold text-ink-900 dark:text-ink-50">Brochures</h2>
-        <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {BROCHURES.map((doc) => (
-            <DocCard key={doc.file} doc={doc} />
-          ))}
-        </div>
-      </section>
+        <section className="mt-12">
+          <h2 className="text-xl font-semibold text-ink-900 dark:text-ink-50">Warranty &amp; service guides</h2>
+          <p className="mt-2 text-sm text-ink-500">
+            Official service schedules and warranty terms. Mahindra restricts full dealer-level workshop/repair
+            manuals (wiring diagrams, teardown procedures) to its dealer network — we haven't found a publicly
+            downloadable copy of those for any of the {CAR_MODELS.join(', ')}.
+          </p>
+          <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {SERVICE_GUIDES.map((doc) => (
+              <DocCard key={doc.file} doc={doc} />
+            ))}
+          </div>
+        </section>
+
+        <section className="mt-12">
+          <h2 className="text-xl font-semibold text-ink-900 dark:text-ink-50">Brochures</h2>
+          <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {BROCHURES.map((doc) => (
+              <DocCard key={doc.file} doc={doc} />
+            ))}
+          </div>
+        </section>
+      </div>
     </div>
   )
 }

@@ -23,7 +23,7 @@ export function Layout() {
 
   return (
     <div className="flex min-h-svh flex-col">
-      <header className="sticky top-0 z-20 border-b border-ink-200/70 bg-ink-50/80 backdrop-blur dark:border-ink-800/70 dark:bg-ink-950/80">
+      <header className="sticky top-0 z-20 border-b border-ink-200/70 bg-ink-50/80 bg-gradient-to-br from-brand-500/10 via-transparent to-transparent backdrop-blur dark:border-ink-800/70 dark:bg-ink-950/80">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4 sm:px-6">
           <NavLink to="/" className="flex items-center gap-2 text-base font-semibold text-ink-900 dark:text-ink-50">
             <span className="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-brand-500 text-sm font-bold text-white">
