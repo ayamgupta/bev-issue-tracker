@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { usePageMeta } from '../lib/usePageMeta'
+import { BatteryHealthGame } from '../components/BatteryHealthGame'
 
 type Mode = 'classic' | 'fun'
 
@@ -501,6 +502,17 @@ export function CareGuide() {
                   <span className="text-ink-500">{m.detail}</span>
                 </div>
               ))}
+            </div>
+          </section>
+
+          <section className="mt-12">
+            <h2 className="text-xl font-semibold text-ink-900 dark:text-ink-50">🎮 Play: Battery Health Simulator</h2>
+            <p className="mt-2 text-sm text-ink-500">
+              Answer 7 quick questions about your actual charging habits and get a simulated 5-year battery health
+              score, based on the Do&rsquo;s and Don&rsquo;ts below.
+            </p>
+            <div className="mt-4">
+              <BatteryHealthGame />
             </div>
           </section>
 
